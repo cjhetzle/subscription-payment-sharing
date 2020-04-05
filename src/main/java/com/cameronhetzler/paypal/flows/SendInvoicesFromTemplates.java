@@ -4,11 +4,14 @@ import org.apache.log4j.Logger;
 
 import com.cameronhetzler.paypal.result.Result;
 
+import lombok.Getter;
+
 /**
  * 
  * @author Cameron Hetzler
  *
  */
+@Getter
 class SendInvoicesFromTemplates extends ApplicationFlow {
 
 	private static final String CLASSNAME = SendInvoicesFromTemplates.class.getName();
@@ -16,14 +19,20 @@ class SendInvoicesFromTemplates extends ApplicationFlow {
 	
 	public Result configureAndBuildRequest() {
 		String methodName = "configureAndBuildRequest";
-		
-		
+		Long entryTime = entering(methodName);
+		Result result = new Result();
 		// TODO Auto-generated method stub
-		return null;
+		
+		exiting(methodName, entryTime);
+		return result;
 	}
 	
 	public Logger getLogger() {
 		return LOGGER;
+	}
+
+	public String getClassName() {
+		return CLASSNAME;
 	}
 	
 }

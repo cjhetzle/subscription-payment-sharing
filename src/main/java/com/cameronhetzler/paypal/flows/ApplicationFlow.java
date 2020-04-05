@@ -16,6 +16,8 @@ public abstract class ApplicationFlow implements ApplicationFlowInt {
 		StringBuilder strBldr = new StringBuilder();
 		
 		strBldr.append("Entering: ");
+		strBldr.append(getClassName());
+		strBldr.append('.');
 		strBldr.append(methodName);
 		
 		if (objects != null) {
@@ -35,24 +37,28 @@ public abstract class ApplicationFlow implements ApplicationFlowInt {
 		return System.currentTimeMillis();
 	}
 	
-	public void exiting(String methodName, Long entryTime) {
-		exiting(methodName, entryTime, null);
-	}
-	
-	public void exiting(String methodName, Long entryTime, Result result) {
+	public void exiting(String methodName, Long entryTime, Object...objects) {
 		
 		StringBuilder strBldr = new StringBuilder();
 		
 		strBldr.append("Exiting: ");
+		strBldr.append(getClassName());
+		strBldr.append('.');
 		strBldr.append(methodName);
 		strBldr.append(". Total Time: ");
 		
 		Long deltaTime = entryTime - System.currentTimeMillis();
 		strBldr.append(deltaTime);
 		
-		if (result != null) {
-			strBldr.append(". Result: ");
-			strBldr.append(result.toString());
+		if (objects != null) {
+			strBldr.append(". Result: { ");
+			for (Object obj : objects) {
+				strBldr.append(obj.getClass().getName());
+				strBldr.append(": ");
+				strBldr.append(obj.toString());
+				strBldr.append(", ");
+			}
+			strBldr.append(" }");
 		}
 		
 		Logger logger = getLogger();

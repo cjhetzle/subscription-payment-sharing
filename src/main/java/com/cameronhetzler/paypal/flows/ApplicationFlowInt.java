@@ -11,14 +11,37 @@ import com.cameronhetzler.paypal.result.Result;
  */
 interface ApplicationFlowInt {
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Result configureAndBuildRequest();
 	
+	/**
+	 * 
+	 * @param methodName
+	 * @param object
+	 * @return
+	 */
 	public Long entering(String methodName, Object...object);
 
-	public void exiting(String methodName, Long entryTime);
+	/**
+	 * 
+	 * @param methodName
+	 * @param entryTime
+	 * @param objects
+	 */
+	public void exiting(String methodName, Long entryTime, Object...objects);
 	
-	public void exiting(String methodName, Long entryTime, Result result);
-	
+	/**
+	 * 
+	 * @return
+	 */
 	Logger getLogger();
 	
+	/**
+	 * 
+	 * @return
+	 */
+	String getClassName();
 }

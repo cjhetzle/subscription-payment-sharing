@@ -2,6 +2,8 @@ package com.cameronhetzler.paypal.flows;
 
 import org.apache.log4j.Logger;
 
+import com.cameronhetzler.paypal.exceptions.ServicesException;
+import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
 
 /**
@@ -12,11 +14,13 @@ import com.cameronhetzler.paypal.result.Result;
 interface ApplicationFlowInt {
 	
 	/**
-	 * 
-	 * @return
+	 * Configure a possible payload that is sent in.
+	 * Build a request, given the source class that was called,
+	 * and send out that work to the Paypal-Rest-Sdk
+	 * @return Result object with information on what happened
 	 */
-	public Result configureAndBuildRequest();
-	
+	public Result configureAndBuildRequest(Payload request) throws ServicesException;
+		
 	/**
 	 * 
 	 * @param methodName

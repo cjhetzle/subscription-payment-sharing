@@ -1,8 +1,17 @@
 package com.cameronhetzler.paypal.flows;
 
-import org.apache.log4j.Logger;
+import java.util.Map;
 
-import com.cameronhetzler.paypal.result.Result;
+import org.apache.log4j.Logger;
+import org.jasypt.util.text.BasicTextEncryptor;
+
+import com.cameronhetzler.paypal.exceptions.ErrorCodes;
+import com.cameronhetzler.paypal.exceptions.ServicesException;
+import com.cameronhetzler.paypal.payload.Payload;
+import com.cameronhetzler.paypal.common.Constants;
+import com.paypal.base.rest.APIContext;
+
+import lombok.Getter;
 
 /**
  * 
@@ -11,6 +20,55 @@ import com.cameronhetzler.paypal.result.Result;
  */
 public abstract class ApplicationFlow implements ApplicationFlowInt {
 
+	private String clientID;
+	private String clientSecret;
+	@Getter
+	private APIContext context;
+	private String environment;
+	
+	/**
+	 * 
+	 * @param request
+	 */
+	protected void parseAndSetElements(Payload request) throws ServicesException {
+		String methodName = "parseAndSetElements";
+		Long entryTime = entering(methodName, request);
+		
+		BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+		textEncryptor.setPassword("this-is-not-your-normal-password");
+		
+		Map<String, Object> table = request.getTable();
+		
+		if (!table.containsKey(Constants.CLIENT_ID)) {
+			ServicesException e = new ServicesException("Missing Client-ID in payload.");
+			exiting(methodName, entryTime, e);
+			throw e;
+		} else if (!table.containsKey(Constants.CLIENT_SECRET)) {
+			ServicesException e = new ServicesException("Missing Client-Secret in payload.");
+			exiting(methodName, entryTime, e);
+			throw e;
+		} else if (!table.containsKey(Constants.ENVIRONMENT)) {
+			ServicesException e = new ServicesException("Missing Environment Type in payload.");
+			exiting(methodName, entryTime, e);
+			throw e;
+		}
+		
+		try {
+			clientID = textEncryptor.decrypt((String)table.get(Constants.CLIENT_ID));
+			clientSecret = textEncryptor.decrypt((String)table.get(Constants.CLIENT_SECRET));
+		} catch (Exception e) {
+			ServicesException _e = new ServicesException("Unable to decrypt clientID and clientSecret. Make sure there is not a casting error to <String>", ErrorCodes.BASIC_ERROR, e);
+			exiting(methodName, entryTime, _e);
+			throw _e;
+		}
+		
+		environment = (String)table.get(Constants.ENVIRONMENT);
+		
+		context = new APIContext(clientID, clientSecret, environment);
+		
+		exiting(methodName, entryTime);
+	}
+	
 	public Long entering(String methodName, Object...objects) {
 		
 		StringBuilder strBldr = new StringBuilder();
@@ -47,7 +105,7 @@ public abstract class ApplicationFlow implements ApplicationFlowInt {
 		strBldr.append(methodName);
 		strBldr.append(". Total Time: ");
 		
-		Long deltaTime = entryTime - System.currentTimeMillis();
+		Long deltaTime = System.currentTimeMillis() - entryTime;
 		strBldr.append(deltaTime);
 		
 		if (objects != null) {

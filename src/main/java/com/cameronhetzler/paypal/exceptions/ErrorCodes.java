@@ -7,7 +7,9 @@ package com.cameronhetzler.paypal.exceptions;
  */
 public enum ErrorCodes {
 
-	EXAMPLE("EXAMPLE", "0x0");
+	EXAMPLE("EXAMPLE", "0x0"),
+	BASIC_ERROR("BASIC_ERROR", "0x1");
+	
 	
 	private String value;
 	private String code;

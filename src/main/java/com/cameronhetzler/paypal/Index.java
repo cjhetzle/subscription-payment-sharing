@@ -21,22 +21,23 @@ import com.cameronhetzler.paypal.exceptions.ServicesException;
  */
 public class Index {
 
-	private static final String clientID_sandbox = "fuck-off";
-	private static final String clientSecret_sandbox = "fuck-off";
-	private static final String clientID = "fuck-off";
-	private static final String clientSecret = "fuck-off";
-	
 	public static void main(String[] args) {
 		
-		if (args.length < 1) {
+		if (args.length < 4) {
 			System.out.println("Please make sure to supply args. Exiting...");
 			System.exit(-1);
 		}
 		
 		Classifications classification = null;
+		String clientID = null;
+		String clientSecret = null;
+		String environment = null;
 		
 		try {
 			classification = Classifications.valueOf(args[0]);
+			clientID = args[1].strip();
+			clientSecret = args[2].strip();
+			environment = args[3].strip();
 		} catch (Exception e) {
 			System.out.println("Please make sure to supply valid args. Exiting...");
 			System.exit(-1);
@@ -44,27 +45,27 @@ public class Index {
 		
 		BasicConfigurator.configure();
 		
-		handleRequest(classification);
-	}
-	
-	public static Result handleRequest(Classifications classification) {
-		Result result = null;
-		
-		Payload request = new Payload();
+		// Build a payload
+		Payload request = new Payload(classification);
 		Map<String, Object> table = new HashMap<String, Object>();
 		
 		BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
 		textEncryptor.setPassword("this-is-not-your-normal-password");
 		
+		table.put(Constants.CLASSIFICATION, classification);
 		table.put(Constants.CLIENT_ID, textEncryptor.encrypt(clientID));
 		table.put(Constants.CLIENT_SECRET, textEncryptor.encrypt(clientSecret));
-		table.put(Constants.ENVIRONMENT, Constants.LIVE);
+		table.put(Constants.ENVIRONMENT, environment);
 		
-		request.setTable(table);
+		handleRequest(request);
+	}
+	
+	public static Result handleRequest(Payload request) {
+		Result result = null;
 		
 		ApplicationFlow flow = null;
 		try {
-			switch (classification) {
+			switch ((Classifications)request.getTable().get(Constants.CLASSIFICATION)) {
 			case EXAMPLE:
 				flow = new SendInvoicesFromTemplates();
 				break;

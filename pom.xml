@@ -37,12 +37,13 @@
 	    <version>1.9.3</version>
 	</dependency>
 	
-	<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+	<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-graphics -->
 	<dependency>
-	    <groupId>org.slf4j</groupId>
-	    <artifactId>slf4j-api</artifactId>
-	    <version>1.7.25</version>
+	    <groupId>org.openjfx</groupId>
+	    <artifactId>javafx-graphics</artifactId>
+	    <version>14</version>
 	</dependency>
+
   	
   </dependencies>
 </project>

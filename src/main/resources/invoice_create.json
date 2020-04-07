@@ -1,0 +1,38 @@
+{
+  "merchant_info": {
+    "email": "example@email.com",
+    "first_name": "firstName",
+    "last_name": "lastName",
+    "business_name": "businessame",
+    "phone": {
+      "country_code": "001",
+      "national_number": "123456789"
+    },
+    "address": {
+      "line1": "line1",
+      "city": "city",
+      "state": "state",
+      "postal_code": "postal",
+      "country_code": "country"
+    }
+  },
+  "billing_info": [
+  {
+    "email": "example@email.com"
+  }
+  ],
+  "items": [
+  {
+    "name": "name",
+    "quantity": 1,
+    "unit_price": {
+    "currency": "USD",
+    "value": 5
+    }
+  }
+  ],
+  "note": "note",
+  "payment_term" :{
+	  "term_type": "NET_10"
+  }
+}

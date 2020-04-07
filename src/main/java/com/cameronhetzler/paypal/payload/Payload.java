@@ -25,4 +25,8 @@ public class Payload implements PayloadInt  {
 	
 	private String payloadString;
 	
+	public Payload(Classifications classification) {
+		this.classification = classification;
+	}
+	
 }

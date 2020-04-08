@@ -57,6 +57,8 @@ public class Index {
 		table.put(Constants.CLIENT_SECRET, textEncryptor.encrypt(clientSecret));
 		table.put(Constants.ENVIRONMENT, environment);
 		
+		request.setTable(table);
+		
 		handleRequest(request);
 	}
 	
@@ -64,8 +66,14 @@ public class Index {
 		Result result = null;
 		
 		ApplicationFlow flow = null;
+		Classifications classification = null;
 		try {
-			switch ((Classifications)request.getTable().get(Constants.CLASSIFICATION)) {
+			classification = (Classifications) request.getTable().get(Constants.CLASSIFICATION);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		try {
+			switch (classification) {
 			case EXAMPLE:
 				flow = new SendInvoicesFromTemplates();
 				break;

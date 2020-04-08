@@ -37,4 +37,21 @@ public class MerchantInfoType extends TypeBase<MerchantInfo> {
 			throw se;
 		}
 	}
+	
+	public void save(String jsonFile, MerchantInfo instance) throws ServicesException {
+		String methodName = "load";
+		if (jsonFile == null) {
+			ServicesException se = new ServicesException("Param passed in was [null].");
+			LOGGER.debug(se);
+			throw se;
+		}		
+		
+		try {
+			super.save(jsonFile, instance);
+		} catch (IOException e) {
+			ServicesException se = new ServicesException("Error thrown while loading Invoice from jsonFile: " + jsonFile, null, e);
+			LOGGER.debug("Throwing Error in " + CLASSNAME + "." + methodName, se);
+			throw se;
+		}
+	}
 }

@@ -27,10 +27,10 @@ import lombok.Getter;
  *
  */
 @Getter
-public class SendInvoicesFromTemplates extends ApplicationFlow {
+public class SendServiceInvoicesFromTemplates extends ApplicationFlow {
 
-	private static final String CLASSNAME = SendInvoicesFromTemplates.class.getName();
-	private static final Logger LOGGER = Logger.getLogger(SendInvoicesFromTemplates.class);
+	private static final String CLASSNAME = SendServiceInvoicesFromTemplates.class.getName();
+	private static final Logger LOGGER = Logger.getLogger(SendServiceInvoicesFromTemplates.class);
 	
 	private static final String json = ".json";
 	private static final String currencyJson = "currency_";

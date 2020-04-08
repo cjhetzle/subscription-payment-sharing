@@ -1,14 +1,16 @@
 package com.cameronhetzler.paypal.spectypes;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.cameronhetzler.paypal.common.JSONFormatter;
+import com.cameronhetzler.paypal.exceptions.ServicesException;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +34,44 @@ public abstract class TypeBase<T> {
 	
 	public TypeBase(List<T> instanceList) {
 		this.instanceList = instanceList;
+	}
+	
+	protected void save(String jsonFile, T instance) throws IOException, ServicesException {
+		BufferedWriter bw = null;
+		try {
+			String jsonString = JSONFormatter.toJSON(instance);
+			bw = new BufferedWriter(new FileWriter(new File(
+					getClass().getClassLoader().getResource(jsonFile).getFile())));
+			
+			bw.write(jsonString);
+		} finally {
+			if (bw != null) {
+				try {
+					bw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	protected void save(String jsonFile, List<T> instanceList) throws IOException {
+		BufferedWriter bw = null;
+		try {
+			String jsonString = JSONFormatter.toJSON(instanceList);
+			bw = new BufferedWriter(new FileWriter(new File(
+					getClass().getClassLoader().getResource(jsonFile).getFile())));
+			
+			bw.write(jsonString);
+		} finally {
+			if (bw != null) {
+				try {
+					bw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	protected <C> C load(String jsonFile, Class<C> clazz) throws IOException {

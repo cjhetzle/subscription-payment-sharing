@@ -7,11 +7,12 @@ import org.apache.log4j.BasicConfigurator;
 import org.jasypt.util.text.BasicTextEncryptor;
 
 import com.cameronhetzler.paypal.flows.ApplicationFlow;
-import com.cameronhetzler.paypal.flows.SendInvoicesFromTemplates;
+import com.cameronhetzler.paypal.flows.SendServiceInvoicesFromTemplates;
 import com.cameronhetzler.paypal.payload.Classifications;
 import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
 import com.cameronhetzler.paypal.common.Constants;
+import com.cameronhetzler.paypal.common.SupportedServices;
 import com.cameronhetzler.paypal.exceptions.ServicesException;
 
 /**
@@ -56,6 +57,7 @@ public class Index {
 		table.put(Constants.CLIENT_ID, textEncryptor.encrypt(clientID));
 		table.put(Constants.CLIENT_SECRET, textEncryptor.encrypt(clientSecret));
 		table.put(Constants.ENVIRONMENT, environment);
+		table.put(Constants.SERVICE, SupportedServices.NETFLIX);
 		
 		request.setTable(table);
 		
@@ -75,7 +77,31 @@ public class Index {
 		try {
 			switch (classification) {
 			case EXAMPLE:
-				flow = new SendInvoicesFromTemplates();
+				flow = new SendServiceInvoicesFromTemplates();
+				break;
+			case ADD_BILLINGINFO:
+				
+				break;
+			case ADD_SUPPORTED_SERVICE:
+				
+				break;
+			case ADD_SERVICE_ITEM:
+				
+				break;
+			case SEND_SERVICE_INVOICES:
+				
+				break;
+			case SEND_SINGLE_SERVICE_INVOICE:
+				
+				break;
+			case CANCEL_SERVICE_INVOICES:
+				
+				break;
+			case CANCEL_SINGLE_SERVICE_INVOICE:
+				
+				break;
+			case SEND_SERVICE_INVOICES_FROM_TEMPLATES:
+				flow = new SendServiceInvoicesFromTemplates();
 				break;
 			default:
 				throw new ServicesException("No Application flow found for the given classification");

@@ -52,6 +52,10 @@ public class JSONFormatter {
 	public static <T> String toJSON(T t) {
 		return GSON.toJson(t);
 	}
+	
+	public static <T> String toJSON(T t, Type type) {
+		return GSON.toJson(t, type);
+	}
 
 	/**
 	 * Converts a JSON String to object representation

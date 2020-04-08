@@ -6,6 +6,11 @@ import com.cameronhetzler.paypal.exceptions.ServicesException;
 import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
 
+/**
+ * 
+ * @author Cameron Hetzler
+ *
+ */
 public class AddServiceItem extends ApplicationFlow {
 
 	public Result configureAndBuildRequest(Payload request) {

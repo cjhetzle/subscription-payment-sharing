@@ -19,7 +19,7 @@ interface ApplicationFlowInt {
 	 * and send out that work to the Paypal-Rest-Sdk
 	 * @return Result object with information on what happened
 	 */
-	public Result configureAndBuildRequest(Payload request) throws ServicesException;
+	public Result configureAndBuildRequest(Payload request);
 		
 	/**
 	 * 

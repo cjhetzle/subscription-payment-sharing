@@ -10,89 +10,186 @@ import com.cameronhetzler.paypal.exceptions.ErrorCodes;
 import com.cameronhetzler.paypal.exceptions.ServicesException;
 import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
+import com.cameronhetzler.paypal.result.ResultCodes;
 import com.cameronhetzler.paypal.spectypes.BillingInfoType;
 import com.cameronhetzler.paypal.spectypes.CurrencyType;
 import com.cameronhetzler.paypal.spectypes.InvoiceItemType;
+import com.cameronhetzler.paypal.spectypes.InvoiceType;
 import com.cameronhetzler.paypal.spectypes.MerchantInfoType;
 import com.cameronhetzler.paypal.spectypes.TaxType;
 import com.paypal.api.payments.BillingInfo;
 import com.paypal.api.payments.Invoice;
 import com.paypal.base.rest.PayPalRESTException;
 
-import lombok.Getter;
-
 /**
  * 
  * @author Cameron Hetzler
  *
  */
-@Getter
 public class SendServiceInvoicesFromTemplates extends ApplicationFlow {
 
 	private static final String CLASSNAME = SendServiceInvoicesFromTemplates.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(SendServiceInvoicesFromTemplates.class);
 	
-	private static final String json = ".json";
-	private static final String currencyJson = "currency_";
-	private static final String billinginfoJson = "billinginfo_";
-	private static final String merchantinfoJson = "merchantinfo_";
-	private static final String taxJson = "tax_";
-	private static final String itemJson = "item_";
-	private static final String netflix = "netflix";
+	private String service;
+	private Invoice invoice;
 	
-	public Result configureAndBuildRequest(Payload request) throws ServicesException {
+	public Result configureAndBuildRequest(Payload request) {
 		String methodName = "configureAndBuildRequest";
 		Long entryTime = entering(methodName);
 		Result result = new Result();
-		// TODO Auto-generated method stub
-		parseAndSetElements(request);
+		result.setResultCode(ResultCodes.SUCCESS);
 		
-		Invoice invoice = new Invoice();
-		
-		MerchantInfoType merchantInfo = new MerchantInfoType();
-		merchantInfo.setInstance(merchantInfo.load(merchantinfoJson + netflix + json));
-		
-		CurrencyType currency = new CurrencyType();
-		currency.setInstance(currency.load(currencyJson + netflix + json));
-		
-		TaxType tax = new TaxType();
-		tax.setInstance(tax.load(taxJson + netflix + json));
-		
-		InvoiceItemType item = new InvoiceItemType();
-		item.setInstance(item.load(itemJson + netflix + json));
-		item.setInstance(
-				item.getInstance().setTax(
-						tax.getInstance()));
-		item.setInstance(
-				item.getInstance().setUnitPrice(
-						currency.getInstance()));
-		
-		BillingInfoType billingInfo = new BillingInfoType();
-		billingInfo.setInstanceList(billingInfo.load(billinginfoJson + netflix + json));
-		
-		invoice.setMerchantInfo(merchantInfo.getInstance());
-		invoice.setItems(Arrays.asList(item.getInstance()));
-		invoice.setBillingInfo(billingInfo.getInstanceList());
-		
-		// create the draft invoices
 		try {
-			invoice = invoice.create(getContext());
-		} catch (PayPalRESTException e) {
-			ServicesException _e = new ServicesException("Unable to create draft Invoice.", ErrorCodes.EXAMPLE, e);
-			exiting(methodName, entryTime, _e);
-			throw _e;
+			
+			parseAndSetElements(request);
+			
+			buildBaseInvoiceRequest(request);
+			
+			getBillingInfoAndSend(request);
+			
+		} catch(ServicesException se) {
+			error("Exception caught in: " + methodName, se);
+			result.setResultCode(ResultCodes.FAILURE);
+			result.setThrowable(se);
 		}
 		
+		exiting(methodName, entryTime, result);
+		return result;
+	}
+	
+	/**
+	 * Build an instance of an Invoice using TypeBase classes
+	 * to load templates from the resources and then override
+	 * class wide Invoice at the end.
+	 * 
+	 * @param request
+	 * @throws ServicesException
+	 */
+	private void buildBaseInvoiceRequest(Payload request) throws ServicesException {
+		String methodName = "buildBaseInvoiceRequest";
+		Long entryTime = entering(methodName, request);
+		
+		Object object = request.getTable().get(Constants.SERVICE);
+		
+		String service = null;
 		try {
-			invoice.send(getContext());
-		} catch (PayPalRESTException e) {
-			ServicesException _e = new ServicesException("Unable to send Invoice.", ErrorCodes.EXAMPLE, e);
-			exiting(methodName, entryTime, _e);
-			throw _e;
+			service = (String) object;
+			this.service = service;
+			info("Service was parsed and set to: " + this.service);
+		} catch (Exception e) {
+			error("Exception caught.", e);
+			ServicesException se = new ServicesException("Unable to cast service <Object> to <String>.", ErrorCodes.BASIC_ERROR, e);
+			exiting(methodName, entryTime, se);
+			throw se;
+		} finally {
+			if (service == null) {
+				error("Service is null. Throwing error.");
+				ServicesException se = new ServicesException("Parsed [Service] was null.");
+				exiting(methodName, entryTime, se);
+				throw se;
+			}
+		}
+		
+		MerchantInfoType merchantInfo = new MerchantInfoType();
+		try {
+			merchantInfo.setInstance(merchantInfo.load(Constants.MERCHANTINFO_FILE + this.service + Constants.JSON));
+		} catch (Exception e) {
+			error("Exception caught.", e);
+			ServicesException se = new ServicesException("Unable to load MerchantInfo file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
+			exiting(methodName, entryTime, se);
+			throw se;
+		}
+		
+		CurrencyType currency = new CurrencyType();
+		try {
+			currency.setInstance(currency.load(Constants.CURRENCY_FILE + this.service + Constants.JSON));
+		} catch (Exception e) {
+			error("Exception caught.", e);
+			ServicesException se = new ServicesException("Unable to load Currency file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
+			exiting(methodName, entryTime, se);
+			throw se;
+		}
+		
+		TaxType tax = new TaxType();
+		try {
+			tax.setInstance(tax.load(Constants.TAX_FILE + this.service + Constants.JSON));
+		} catch (Exception e) {
+			error("Exception caught.", e);
+			ServicesException se = new ServicesException("Unable to load Tax file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
+			exiting(methodName, entryTime, se);
+			throw se;
+		}
+		
+		InvoiceItemType item = new InvoiceItemType();
+		try {
+			item.setInstance(item.load(Constants.ITEM_FILE + this.service + Constants.JSON));
+		} catch (Exception e) {
+			error("Exception caught.", e);
+			ServicesException se = new ServicesException("Unable to load Item file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
+			exiting(methodName, entryTime, se);
+			throw se;
+		}
+		
+		item.setInstance(item.getInstance().setUnitPrice(currency.getInstance()));
+		
+		item.setInstance(item.getInstance().setTax(tax.getInstance()));
+		
+		InvoiceType invoice = new InvoiceType();
+		try {
+			invoice.setInstance(invoice.load(Constants.INVOICE_FILE + this.service + Constants.JSON));
+		} catch (Exception e) {
+			error("Exception caught.", e);
+			ServicesException se = new ServicesException("Unable to load Invoice file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
+			exiting(methodName, entryTime, se);
+			throw se;
+		}
+		
+		invoice.setInstance(invoice.getInstance().setMerchantInfo(merchantInfo.getInstance()));
+		
+		invoice.setInstance(invoice.getInstance().setItems(Arrays.asList(item.getInstance())));
+		
+		this.invoice = invoice.getInstance();
+		exiting(methodName, entryTime);
+	}
+	
+	private void getBillingInfoAndSend(Payload request) throws ServicesException {
+		String methodName = "getBillingInfoAndSend";
+		Long entryTime = entering(methodName, request);
+		
+		BillingInfoType billingInfo = new BillingInfoType();
+		try {
+			billingInfo.setInstanceList(billingInfo.load(Constants.BILLINGINFO_FILE + this.service + Constants.JSON));
+		} catch (Exception e) {
+			ServicesException se = new ServicesException("Unable to load BillingInfo file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
+			exiting(methodName, entryTime, se);
+			throw se;
+		}
+		
+		// this could use some fall back
+		List<BillingInfo> billingList = billingInfo.getInstanceList();
+		Invoice invoice = this.invoice;
+		try {
+			for (BillingInfo bi : billingList) {
+				invoice.setBillingInfo(Arrays.asList(bi));
+				
+				// create the template on PayPal account
+				invoice = invoice.create(getContext());
+				
+				// with invoice id, send out invoice
+				invoice.send(getContext());
+				
+				info("Successfully send out invoice: " + invoice.getId());
+				
+				invoice = this.invoice;
+			}
+		} catch (PayPalRESTException pre) {
+			ServicesException se = new ServicesException("Error while creating Invoices. Make sure template data is correct.", ErrorCodes.BASIC_ERROR, pre);
+			exiting(methodName, entryTime, se);
+			throw se;
 		}
 		
 		exiting(methodName, entryTime);
-		return result;
 	}
 	
 	public Logger getLogger() {

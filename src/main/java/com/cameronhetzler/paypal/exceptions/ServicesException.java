@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class ServicesException extends Throwable {
 
 	@NonNull

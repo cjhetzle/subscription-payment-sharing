@@ -8,7 +8,7 @@ import com.cameronhetzler.paypal.result.Result;
 
 public class SendSingleServiceInvoice extends ApplicationFlow {
 
-	public Result configureAndBuildRequest(Payload request) throws ServicesException {
+	public Result configureAndBuildRequest(Payload request) {
 		// TODO Auto-generated method stub
 		return null;
 	}

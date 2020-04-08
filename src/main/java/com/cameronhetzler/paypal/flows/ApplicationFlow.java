@@ -123,4 +123,84 @@ public abstract class ApplicationFlow implements ApplicationFlowInt {
 		logger.debug(strBldr.toString());
 	}
 	
+	public void info(String message, Object...objects) {
+		
+		StringBuilder strBldr = new StringBuilder();
+		
+		strBldr.append(message);
+		
+		if (objects != null) {
+			strBldr.append(". Objects: { ");
+			for (Object obj : objects) {
+				strBldr.append(obj.getClass().getName());
+				strBldr.append(": ");
+				strBldr.append(obj.toString());
+				strBldr.append(", ");
+			}
+			strBldr.append(" }");
+		}
+		
+		Logger logger = getLogger();
+		logger.info(strBldr.toString());
+	}
+	
+	public void debug(String message, Object...objects) {
+		StringBuilder strBldr = new StringBuilder();
+		
+		strBldr.append(message);
+		
+		if (objects != null) {
+			strBldr.append(". Objects: { ");
+			for (Object obj : objects) {
+				strBldr.append(obj.getClass().getName());
+				strBldr.append(": ");
+				strBldr.append(obj.toString());
+				strBldr.append(", ");
+			}
+			strBldr.append(" }");
+		}
+		
+		Logger logger = getLogger();
+		logger.debug(strBldr.toString());
+	}
+	
+	public void warning(String message, Object...objects) {
+		StringBuilder strBldr = new StringBuilder();
+		
+		strBldr.append(message);
+		
+		if (objects != null) {
+			strBldr.append(". Objects: { ");
+			for (Object obj : objects) {
+				strBldr.append(obj.getClass().getName());
+				strBldr.append(": ");
+				strBldr.append(obj.toString());
+				strBldr.append(", ");
+			}
+			strBldr.append(" }");
+		}
+		
+		Logger logger = getLogger();
+		logger.warn(strBldr.toString());
+	}
+	
+	public void error(String message, Object...objects) {
+		StringBuilder strBldr = new StringBuilder();
+		
+		strBldr.append(message);
+		
+		if (objects != null) {
+			strBldr.append(". Objects: { ");
+			for (Object obj : objects) {
+				strBldr.append(obj.getClass().getName());
+				strBldr.append(": ");
+				strBldr.append(obj.toString());
+				strBldr.append(", ");
+			}
+			strBldr.append(" }");
+		}
+		
+		Logger logger = getLogger();
+		logger.error(strBldr.toString());
+	}
 }

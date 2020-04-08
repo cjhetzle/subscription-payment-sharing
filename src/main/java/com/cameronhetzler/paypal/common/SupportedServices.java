@@ -1,7 +1,5 @@
 package com.cameronhetzler.paypal.common;
 
-import lombok.Getter;
-
 public enum SupportedServices {
 
 	NETFLIX("netflix"),
@@ -9,10 +7,13 @@ public enum SupportedServices {
 	NINTENDO_ONLINE("nintendo_online"),
 	CRUNCHYROLL("crunchyroll");
 	
-	@Getter
 	private String value;
 	
 	private SupportedServices(String value) {
 		this.value = value;
+	}
+	
+	public String toString() {
+		return value.toLowerCase();
 	}
 }

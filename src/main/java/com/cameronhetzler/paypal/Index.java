@@ -6,8 +6,15 @@ import java.util.Map;
 import org.apache.log4j.BasicConfigurator;
 import org.jasypt.util.text.BasicTextEncryptor;
 
+import com.cameronhetzler.paypal.flows.AddBillingInfo;
+import com.cameronhetzler.paypal.flows.AddServiceItem;
+import com.cameronhetzler.paypal.flows.AddSupportedService;
 import com.cameronhetzler.paypal.flows.ApplicationFlow;
+import com.cameronhetzler.paypal.flows.CancelServiceInvoices;
+import com.cameronhetzler.paypal.flows.CancelSingleServiceInvoice;
+import com.cameronhetzler.paypal.flows.SendServiceInvoices;
 import com.cameronhetzler.paypal.flows.SendServiceInvoicesFromTemplates;
+import com.cameronhetzler.paypal.flows.SendSingleServiceInvoice;
 import com.cameronhetzler.paypal.payload.Classifications;
 import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
@@ -57,11 +64,11 @@ public class Index {
 		table.put(Constants.CLIENT_ID, textEncryptor.encrypt(clientID));
 		table.put(Constants.CLIENT_SECRET, textEncryptor.encrypt(clientSecret));
 		table.put(Constants.ENVIRONMENT, environment);
-		table.put(Constants.SERVICE, SupportedServices.NETFLIX);
+		table.put(Constants.SERVICE, SupportedServices.NETFLIX.toString());
 		
 		request.setTable(table);
 		
-		handleRequest(request);
+		System.out.println(handleRequest(request).toString());
 	}
 	
 	public static Result handleRequest(Payload request) {
@@ -74,42 +81,38 @@ public class Index {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		try {
-			switch (classification) {
-			case EXAMPLE:
-				flow = new SendServiceInvoicesFromTemplates();
-				break;
-			case ADD_BILLINGINFO:
-				
-				break;
-			case ADD_SUPPORTED_SERVICE:
-				
-				break;
-			case ADD_SERVICE_ITEM:
-				
-				break;
-			case SEND_SERVICE_INVOICES:
-				
-				break;
-			case SEND_SINGLE_SERVICE_INVOICE:
-				
-				break;
-			case CANCEL_SERVICE_INVOICES:
-				
-				break;
-			case CANCEL_SINGLE_SERVICE_INVOICE:
-				
-				break;
-			case SEND_SERVICE_INVOICES_FROM_TEMPLATES:
-				flow = new SendServiceInvoicesFromTemplates();
-				break;
-			default:
-				throw new ServicesException("No Application flow found for the given classification");
-			}
-			flow.configureAndBuildRequest(request);
-		} catch (ServicesException e) {
+		switch (classification) {
+		case EXAMPLE:
+			flow = new SendServiceInvoicesFromTemplates();
+			break;
+		case ADD_BILLINGINFO:
+			flow = new AddBillingInfo();
+			break;
+		case ADD_SUPPORTED_SERVICE:
+			flow = new AddSupportedService();
+			break;
+		case ADD_SERVICE_ITEM:
+			flow = new AddServiceItem();
+			break;
+		case SEND_SERVICE_INVOICES:
+			flow = new SendServiceInvoices();
+			break;
+		case SEND_SINGLE_SERVICE_INVOICE:
+			flow = new SendSingleServiceInvoice();
+			break;
+		case CANCEL_SERVICE_INVOICES:
+			flow = new CancelServiceInvoices();
+			break;
+		case CANCEL_SINGLE_SERVICE_INVOICE:
+			flow = new CancelSingleServiceInvoice();
+			break;
+		case SEND_SERVICE_INVOICES_FROM_TEMPLATES:
+			flow = new SendServiceInvoicesFromTemplates();
+			break;
+		default:
 			
 		}
+		result = flow.configureAndBuildRequest(request);
 		
 		return result;
 	}

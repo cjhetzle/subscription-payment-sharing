@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum ResultCodes {
 	
 	SUCCESS("SUCCESS"),
-	FAILURE("FAILURE");
+	FAILURE("FAILURE"),
+	WARNING("WARNING");
 	
 	private String result;
 	

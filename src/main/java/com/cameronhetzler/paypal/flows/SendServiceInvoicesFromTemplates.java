@@ -93,7 +93,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationFlow {
 		
 		MerchantInfoType merchantInfo = new MerchantInfoType();
 		try {
-			merchantInfo.setInstance(merchantInfo.load(Constants.MERCHANTINFO_FILE + this.service + Constants.JSON));
+			merchantInfo.setInstance(merchantInfo.create(Constants.MERCHANTINFO_FILE + this.service + Constants.JSON).get(0));
 		} catch (Exception e) {
 			error("Exception caught.", e);
 			ServicesException se = new ServicesException("Unable to load MerchantInfo file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
@@ -103,7 +103,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationFlow {
 		
 		CurrencyType currency = new CurrencyType();
 		try {
-			currency.setInstance(currency.load(Constants.CURRENCY_FILE + this.service + Constants.JSON));
+			currency.setInstance(currency.create(Constants.CURRENCY_FILE + this.service + Constants.JSON).get(0));
 		} catch (Exception e) {
 			error("Exception caught.", e);
 			ServicesException se = new ServicesException("Unable to load Currency file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
@@ -113,7 +113,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationFlow {
 		
 		TaxType tax = new TaxType();
 		try {
-			tax.setInstance(tax.load(Constants.TAX_FILE + this.service + Constants.JSON));
+			tax.setInstance(tax.create(Constants.TAX_FILE + this.service + Constants.JSON).get(0));
 		} catch (Exception e) {
 			error("Exception caught.", e);
 			ServicesException se = new ServicesException("Unable to load Tax file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
@@ -123,7 +123,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationFlow {
 		
 		InvoiceItemType item = new InvoiceItemType();
 		try {
-			item.setInstance(item.load(Constants.ITEM_FILE + this.service + Constants.JSON));
+			item.setInstance(item.create(Constants.ITEM_FILE + this.service + Constants.JSON).get(0));
 		} catch (Exception e) {
 			error("Exception caught.", e);
 			ServicesException se = new ServicesException("Unable to load Item file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
@@ -137,7 +137,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationFlow {
 		
 		InvoiceType invoice = new InvoiceType();
 		try {
-			invoice.setInstance(invoice.load(Constants.INVOICE_FILE + this.service + Constants.JSON));
+			invoice.setInstance(invoice.create(Constants.INVOICE_FILE + this.service + Constants.JSON).get(0));
 		} catch (Exception e) {
 			error("Exception caught.", e);
 			ServicesException se = new ServicesException("Unable to load Invoice file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
@@ -159,7 +159,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationFlow {
 		
 		BillingInfoType billingInfo = new BillingInfoType();
 		try {
-			billingInfo.setInstanceList(billingInfo.load(Constants.BILLINGINFO_FILE + this.service + Constants.JSON));
+			billingInfo.setInstanceList(billingInfo.create(Constants.BILLINGINFO_FILE + this.service + Constants.JSON));
 		} catch (Exception e) {
 			ServicesException se = new ServicesException("Unable to load BillingInfo file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
 			exiting(methodName, entryTime, se);

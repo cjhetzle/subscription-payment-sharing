@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.List;
 
 import com.cameronhetzler.paypal.common.JSONFormatter;
@@ -21,18 +22,20 @@ import lombok.Setter;
  *
  * @param <T>
  */
-public abstract class TypeBase<T> {
+public abstract class BaseType<T> implements BaseTypeInt<T> {
 
 	@Getter @Setter
 	protected T instance;
 	@Getter @Setter
 	protected List<T> instanceList;
 	
-	public TypeBase(T instance) {
+	private String fileString;
+	
+	public BaseType(T instance) {
 		this.instance = instance;
 	}
 	
-	public TypeBase(List<T> instanceList) {
+	public BaseType(List<T> instanceList) {
 		this.instanceList = instanceList;
 	}
 	
@@ -74,7 +77,11 @@ public abstract class TypeBase<T> {
 		}
 	}
 	
-	protected <C> C load(String jsonFile, Class<C> clazz) throws IOException {
+	private String load(String jsonFile) throws ServicesException{
+		
+		if (fileString != null)
+			return fileString;
+		
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(new File(
@@ -87,7 +94,13 @@ public abstract class TypeBase<T> {
 				sb.append(System.getProperty("line.separator"));
 				line = br.readLine();
 			}
-			return (C)JSONFormatter.fromJSON(sb.toString(), clazz);
+			
+			fileString = sb.toString();
+			
+			return fileString;
+		} catch (IOException e) {
+			ServicesException se = new ServicesException("Error Reading File.", null, e);
+			throw se;
 		} finally {
 			if (br != null) {
 				try {
@@ -99,28 +112,23 @@ public abstract class TypeBase<T> {
 		}
 	}
 	
-	protected <C> List<C> load(String jsonFile, Type clazz) throws IOException {
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new FileReader(new File(
-					getClass().getClassLoader().getResource(jsonFile).getFile())));
-			StringBuilder sb = new StringBuilder();
-			String line = br.readLine();
+	protected T load(String jsonFile, Class<T> clazz) throws ServicesException {
+		this.load(jsonFile);
 		
-			while (line != null) {
-				sb.append(line);
-				sb.append(System.getProperty("line.separator"));
-				line = br.readLine();
-			}
-			return JSONFormatter.fromJSON(sb.toString(), clazz);
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		T obj = JSONFormatter.fromJSON(fileString, clazz);
+		
+		fileString = null;
+		
+		return obj;
+	}
+	
+	protected <C> List<C> load(String jsonFile, Type type) throws ServicesException {
+		this.load(jsonFile);
+		
+		List<C> obj = JSONFormatter.fromJSON(fileString, type);
+		
+		fileString = null;
+		
+		return obj;
 	}
 }

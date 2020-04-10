@@ -1,10 +1,11 @@
 package com.cameronhetzler.paypal.spectypes;
 
-import java.io.IOException;
-
-import org.apache.log4j.Logger;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.List;
 
 import com.cameronhetzler.paypal.exceptions.ServicesException;
+import com.google.gson.reflect.TypeToken;
 import com.paypal.api.payments.MerchantInfo;
 
 /**
@@ -12,46 +13,28 @@ import com.paypal.api.payments.MerchantInfo;
  * @author Cameron Hetzler
  *
  */
-public class MerchantInfoType extends TypeBase<MerchantInfo> {
-
-	private static final String CLASSNAME = MerchantInfoType.class.getName();
-	private static final Logger LOGGER = Logger.getLogger(MerchantInfoType.class);
+public class MerchantInfoType extends BaseType<MerchantInfo> {
 	
 	public MerchantInfoType() {
 		super(new MerchantInfo());
 	}
 	
-	public MerchantInfo load(String jsonFile) throws ServicesException {
-		String methodName = "load";
-		if (jsonFile == null) {
-			ServicesException se = new ServicesException("Param passed in was [null].");
-			LOGGER.debug(se);
-			throw se;
-		}		
-		
-		try {
-			return super.load(jsonFile, MerchantInfo.class);
-		} catch (IOException e) {
-			ServicesException se = new ServicesException("Error thrown while loading Invoice from jsonFile: " + jsonFile, null, e);
-			LOGGER.debug("Throwing Error in " + CLASSNAME + "." + methodName, se);
-			throw se;
-		}
+	public Type getType() {
+		// TODO Auto-generated method stub
+		return new TypeToken<List<MerchantInfo>>(){}.getType();
 	}
-	
-	public void save(String jsonFile, MerchantInfo instance) throws ServicesException {
-		String methodName = "load";
-		if (jsonFile == null) {
-			ServicesException se = new ServicesException("Param passed in was [null].");
-			LOGGER.debug(se);
-			throw se;
-		}		
-		
+
+	public Class<MerchantInfo> getSpecType() {
+		// TODO Auto-generated method stub
+		return MerchantInfo.class;
+	}
+
+	public List<MerchantInfo> create(String jsonFile) throws ServicesException {
+		// TODO Auto-generated method stub
 		try {
-			super.save(jsonFile, instance);
-		} catch (IOException e) {
-			ServicesException se = new ServicesException("Error thrown while loading Invoice from jsonFile: " + jsonFile, null, e);
-			LOGGER.debug("Throwing Error in " + CLASSNAME + "." + methodName, se);
-			throw se;
+			return load(jsonFile, getType());
+		} catch (Exception e) {
+			return Arrays.asList( load(jsonFile, getSpecType()) );
 		}
 	}
 }

@@ -1,10 +1,8 @@
 package com.cameronhetzler.paypal.spectypes;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import com.cameronhetzler.paypal.exceptions.ServicesException;
 import com.google.gson.reflect.TypeToken;
@@ -15,30 +13,28 @@ import com.paypal.api.payments.BillingInfo;
  * @author Cameron Hetzler
  *
  */
-public class BillingInfoType extends TypeBase<BillingInfo>{
-
-	private static final String CLASSNAME = BillingInfoType.class.getName();
-	private static final Logger LOGGER = Logger.getLogger(BillingInfoType.class);
+public class BillingInfoType extends BaseType<BillingInfo>{
 	
 	public BillingInfoType() {
 		super(new BillingInfo());
 	}
+
+	public Type getType() {
+		// TODO Auto-generated method stub
+		return new TypeToken<List<BillingInfo>>(){}.getType();
+	}
 	
-	public List<BillingInfo> load(String jsonFile) throws ServicesException {
-		String methodName = "load";
-		if (jsonFile == null) {
-			ServicesException se = new ServicesException("Param passed in was [null].");
-			LOGGER.debug(se);
-			throw se;
-		}		
-		
+	public Class<BillingInfo> getSpecType() {
+		// TODO Auto-generated method stub
+		return BillingInfo.class;
+	}
+	
+	public List<BillingInfo> create(String jsonFile) throws ServicesException {
+		// TODO Auto-generated method stub
 		try {
-			Type listType = new TypeToken<List<BillingInfo>>(){}.getType();
-			return super.load(jsonFile, listType);
-		} catch (IOException e) {
-			ServicesException se = new ServicesException("Error thrown while loading Invoice from jsonFile: " + jsonFile, null, e);
-			LOGGER.debug("Throwing Error in " + CLASSNAME + "." + methodName, se);
-			throw se;
+			return load(jsonFile, getType());
+		} catch (Exception e) {
+			return Arrays.asList( load(jsonFile, getSpecType()) );
 		}
 	}
 }

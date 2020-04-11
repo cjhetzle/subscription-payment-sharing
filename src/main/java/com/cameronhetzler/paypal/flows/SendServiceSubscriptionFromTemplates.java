@@ -70,4 +70,10 @@ public class SendServiceSubscriptionFromTemplates extends ApplicationServiceFlow
 		return null;
 	}
 
+	@Override
+	protected String getSimpleClassName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -21,7 +21,7 @@ public abstract class ApplicationServiceFlow extends ApplicationFlow {
 	protected Result parseAndSetElements(Payload request) {
 		String methodName = "parseAndSetElements";
 		Long entryTime = entering(methodName);
-		Result result = new Result(methodName);
+		Result result = new Result(getSimpleClassName() + "." + methodName);
 		
 		result.append(super.parseAndSetElements(request));
 		
@@ -33,8 +33,8 @@ public abstract class ApplicationServiceFlow extends ApplicationFlow {
 			exiting(methodName, entryTime, result);
 			return result;
 		}
-		
 		this.service = (String) table.get(Constants.SERVICE);
+		info("Service set to: " + service, result);
 		
 		result.success();
 		exiting(methodName, entryTime, result);

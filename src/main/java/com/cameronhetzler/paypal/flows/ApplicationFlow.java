@@ -24,7 +24,18 @@ import lombok.Getter;
 public abstract class ApplicationFlow
 extends LoggingLayer
 implements ApplicationFlowInt {
+	
+	private static final String CLASSNAME = ApplicationFlow.class.getName();
+	private static final String CLASSNAME_SIMPLE = ApplicationFlow.class.getSimpleName();
 
+	protected String getClassName() {
+		return CLASSNAME;
+	}
+	
+	protected String getSimpleClassName() {
+		return CLASSNAME_SIMPLE;
+	}
+	
 	private String clientID;
 	private String clientSecret;
 	@Getter
@@ -34,7 +45,7 @@ implements ApplicationFlowInt {
 	public Result configureAndBuildRequest(Payload request) {
 		String methodName = "configureAndBuildRequest";
 		Long entryTime = entering(methodName);
-		Result result = new Result();
+		Result result = new Result(this.getSimpleClassName() + "." + methodName);
 		
 		try {
 			
@@ -46,6 +57,7 @@ implements ApplicationFlowInt {
 			error("Exception caught in: " + methodName, se);
 			result.setResultCode(ResultCodes.ERROR);
 			result.setThrowable(se);
+			return result;
 		}
 		
 		result.success();
@@ -62,7 +74,7 @@ implements ApplicationFlowInt {
 	protected Result parseAndSetElements(Payload request) {
 		final String methodName = "parseAndSetElements";
 		Long entryTime = entering(methodName, request);
-		Result result = new Result(methodName);
+		Result result = new Result(getSimpleClassName() + "." + methodName);
 		
 		BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
 		textEncryptor.setPassword("this-is-not-your-normal-password");
@@ -70,17 +82,17 @@ implements ApplicationFlowInt {
 		Map<String, Object> table = request.getTable();
 		
 		if (!table.containsKey(Constants.CLIENT_ID)) {
-			error("Missing Client-ID in payload.");
+			error("Missing Client-ID in payload.", result);
 			result.setThrowable(new ServicesException("Missing Client-ID in payload.", ErrorCodes.MISSING_PARAM, null));
 			exiting(methodName, entryTime, result);
 			return result;
 		} else if (!table.containsKey(Constants.CLIENT_SECRET)) {
-			error("Missing Client-Secret in payload.");
+			error("Missing Client-Secret in payload.", result);
 			result.setThrowable(new ServicesException("Missing Client-Secret in payload.", ErrorCodes.MISSING_PARAM, null));
 			exiting(methodName, entryTime, result);
 			return result;
 		} else if (!table.containsKey(Constants.ENVIRONMENT)) {
-			error("Missing Environment Type in payload.");
+			error("Missing Environment Type in payload.", result);
 			result.setThrowable(new ServicesException("Missing Environment Type in payload.", ErrorCodes.MISSING_PARAM, null));
 			exiting(methodName, entryTime, result);
 			return result;
@@ -90,18 +102,19 @@ implements ApplicationFlowInt {
 			this.clientID = textEncryptor.decrypt((String)table.get(Constants.CLIENT_ID));
 			this.clientSecret = textEncryptor.decrypt((String)table.get(Constants.CLIENT_SECRET));
 		} catch (Exception e) {
-			error("Error caught in: " + methodName, e);
+			error("Error caught in: " + methodName, result, e);
 			result.setThrowable(new ServicesException("Unable to decrypt clientID and clientSecret. Make sure there is not a casting error to <String>", ErrorCodes.BASIC_ERROR, e));
 			exiting(methodName, entryTime, result);
 			return result;
 		}
 		
 		this.environment = (String)table.get(Constants.ENVIRONMENT);
+		info("Environment set to: " + environment, result);
 		
 		this.context = new APIContext(clientID, clientSecret, environment);
-		result.append("Created API Context.");
+		info("Created API context.", result);
 		
-		result.setResultCode(ResultCodes.SUCCESS);
+		result.success();
 		exiting(methodName, entryTime, result);
 		return result;
 	}

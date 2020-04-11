@@ -8,6 +8,8 @@ public abstract class LoggingLayer {
 	
 	protected abstract String getClassName();
 	
+	protected abstract String getSimpleClassName();
+	
 	protected abstract Logger getLogger();
 	
 	public Long entering(String methodName, Object...objects) {
@@ -15,7 +17,7 @@ public abstract class LoggingLayer {
 		StringBuilder strBldr = new StringBuilder();
 		
 		strBldr.append("Entering: ");
-		strBldr.append(getClassName());
+		strBldr.append(getSimpleClassName());
 		strBldr.append('.');
 		strBldr.append(methodName);
 		
@@ -44,7 +46,7 @@ public abstract class LoggingLayer {
 		StringBuilder strBldr = new StringBuilder();
 		
 		strBldr.append("Exiting: ");
-		strBldr.append(getClassName());
+		strBldr.append(getSimpleClassName());
 		strBldr.append('.');
 		strBldr.append(methodName);
 		strBldr.append(". Total Time: ");
@@ -53,19 +55,8 @@ public abstract class LoggingLayer {
 		strBldr.append(deltaTime);
 		
 		if (result != null) {
-			strBldr.append(". Result { ");
-//			strBldr.append("message: \"");
-//			strBldr.append(result.getMessage());
-//			strBldr.append("\", ");
-//			strBldr.append("details: ");
-//			for (String detail : result.getPayload()) {
-//				strBldr.append("\"");
-//				strBldr.append(detail);
-//				strBldr.append("\", ");
-//			}
-			strBldr.append(result.toString());
-			strBldr.append(" } ");
-
+			strBldr.append(". ");
+			strBldr.append(result.toStringSimpler());
 		}
 		
 		if (objects != null && objects.length > 0) {

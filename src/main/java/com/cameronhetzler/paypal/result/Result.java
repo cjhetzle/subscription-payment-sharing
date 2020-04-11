@@ -31,8 +31,8 @@ public class Result {
 	@Getter
 	private AbstractList<String> details;
 	
-	@Getter @ToString.Exclude
-	private AbstractList<Result> result;
+	@Getter
+	private AbstractList<Result> results;
 	
 	@Getter
 	private Throwable throwable;
@@ -43,13 +43,12 @@ public class Result {
 	@Getter @Setter
 	private ErrorCodes errorCode;
 	
-	private boolean inheritedCode = false;
-	
 	public void setThrowable(Throwable value) {
-		if (value instanceof ServicesException) {
+		if (value != null && value instanceof ServicesException) {
 			errorCode = ((ServicesException) value).getErrorCode();
 		}
-		resultCode = ResultCodes.ERROR;
+		if (resultCode == null || ResultCodes.ERROR.getLevel() < resultCode.getLevel())
+			resultCode = ResultCodes.ERROR;
 		throwable = value;
 	}
 	
@@ -66,7 +65,8 @@ public class Result {
 	}
 	
 	public void setResultCode(ResultCodes value) {
-		if (!inheritedCode)
+		if (resultCode == null || value != null && 
+				value.getLevel() < resultCode.getLevel())
 			resultCode = value;
 	}
 	
@@ -91,33 +91,31 @@ public class Result {
 	 * @param value
 	 */
 	public void append(Result value) {
-		if (value.getResultCode() != null &&
-				!ResultCodes.ignorableCodes.contains(
-						value.getResultCode())) {
+		if (resultCode == null || value.getResultCode() != null &&
+				value.getResultCode().getLevel() < resultCode.getLevel()) {
 			resultCode = value.getResultCode();
-			inheritedCode = true;
 		}
-		if (result == null) result = new LinkedList<Result>();
-		result.add(value);
+		if (results == null) results = new LinkedList<Result>();
+		results.add(value);
 	}
 	
-//	/**
-//	 * Append a list of Results to this result at once.
-//	 * We need to check each result for a resultCode that is
-//	 * non ignorable.
-//	 * 
-//	 * @param values
-//	 */
-//	public void append(Collection<Result> values) {
-//		for (Result value : values) {
-//			if (value.getResultCode() != null &&
-//					!ResultCodes.ignorableCodes.contains(
-//							value.getResultCode())) {
-//				resultCode = value.getResultCode();
-//				inheritedCode = true;
-//				break;
-//			}
-//		}
-//		result.addAll(values);
-//	}
+	public String toStringSimpler() {
+		StringBuilder strBldr = new StringBuilder();
+		
+		strBldr.append("Result(");
+		
+		strBldr.append("message=" + String.valueOf(message));
+		
+		strBldr.append("details=" + String.valueOf(details));
+		
+		strBldr.append("resultCode=" + String.valueOf(resultCode));
+		
+		strBldr.append("errorCode=" + String.valueOf(errorCode));
+		
+		strBldr.append("throwable=" + String.valueOf(throwable));
+		
+		strBldr.append(")");
+		
+		return strBldr.toString();
+	}
 }

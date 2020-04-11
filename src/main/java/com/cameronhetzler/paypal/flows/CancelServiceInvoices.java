@@ -23,4 +23,10 @@ public class CancelServiceInvoices extends ApplicationFlow {
 		return null;
 	}
 
+	@Override
+	protected String getSimpleClassName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

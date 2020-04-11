@@ -14,6 +14,7 @@ import com.cameronhetzler.paypal.result.Result;
 public class CreateMissingLocalFiles extends ApplicationFlow {
 
 	private static final String CLASSNAME = CreateMissingLocalFiles.class.getName();
+	private static final String CLASSNAME_SIMPLE = CreateMissingLocalFiles.class.getSimpleName();
 	private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 	
 	private String rootDir;
@@ -28,11 +29,16 @@ public class CreateMissingLocalFiles extends ApplicationFlow {
 		return CLASSNAME;
 	}
 	
+	public String getSimpleClassName() {
+		
+		return CLASSNAME_SIMPLE;
+	}
+	
 	@Override
 	protected Result parseAndSetElements(Payload request) {
 		final String methodName = "parseAndSetElements";
 		Long entryTime = entering(methodName, request);
-		Result result = new Result(methodName);
+		Result result = new Result(getSimpleClassName() + "." + methodName);
 		
 		result.append(super.parseAndSetElements(request));
 		

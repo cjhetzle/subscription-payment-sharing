@@ -2,7 +2,6 @@ package com.cameronhetzler.paypal.flows;
 
 import org.apache.log4j.Logger;
 
-import com.cameronhetzler.paypal.common.Constants;
 import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
 import com.cameronhetzler.paypal.spectypes.ChargeModelsType;

@@ -13,7 +13,8 @@ public enum ErrorCodes {
 	FILE_WRITE("FILE_WRITE", "0x3"),
 	TO_JSON("TO_JSON", "0x4"),
 	FROM_JSON("FROM_JSON", "0x5"),
-	NULL_RETURN("NULL_RETURN", "0x6");
+	NULL_RETURN("NULL_RETURN", "0x6"),
+	MISSING_PARAM("MISSING_PARAM", "0x7");
 	
 	
 	private String value;

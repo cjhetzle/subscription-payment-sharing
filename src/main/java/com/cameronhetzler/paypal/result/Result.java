@@ -1,6 +1,8 @@
 package com.cameronhetzler.paypal.result;
 
+import java.util.AbstractList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -27,10 +29,10 @@ public class Result {
 	private String message;
 	
 	@Getter
-	private Queue<String> payload;
+	private AbstractList<String> details;
 	
-	@Getter
-	private Stack<Result> result;
+	@Getter @ToString.Exclude
+	private AbstractList<Result> result;
 	
 	@Getter
 	private Throwable throwable;
@@ -51,6 +53,18 @@ public class Result {
 		throwable = value;
 	}
 	
+	public void success() {
+		this.setResultCode(ResultCodes.SUCCESS);
+	}
+	
+	public void error() {
+		this.setResultCode(ResultCodes.ERROR);
+	}
+	
+	public void warning() {
+		this.setResultCode(ResultCodes.WARNING);
+	}
+	
 	public void setResultCode(ResultCodes value) {
 		if (!inheritedCode)
 			resultCode = value;
@@ -60,12 +74,14 @@ public class Result {
 		this.message = value;
 	}
 
-	public void appendPayload(String value) {
-		payload.add(value);
+	public void append(String value) {
+		if (details == null) details = new LinkedList<String>();
+		details.add(value);
 	}
 	
-	public void appendPayload(Collection<String> values) {
-		payload.addAll(values);
+	public void append(Collection<String> values) {
+	if (details == null) details = new LinkedList<String>();
+		details.addAll(values);
 	}
 	
 	/**
@@ -74,33 +90,34 @@ public class Result {
 	 * 
 	 * @param value
 	 */
-	public void appendResult(Result value) {
+	public void append(Result value) {
 		if (value.getResultCode() != null &&
 				!ResultCodes.ignorableCodes.contains(
 						value.getResultCode())) {
 			resultCode = value.getResultCode();
 			inheritedCode = true;
 		}
+		if (result == null) result = new LinkedList<Result>();
 		result.add(value);
 	}
 	
-	/**
-	 * Append a list of Results to this result at once.
-	 * We need to check each result for a resultCode that is
-	 * non ignorable.
-	 * 
-	 * @param values
-	 */
-	public void appendResult(Collection<Result> values) {
-		for (Result value : values) {
-			if (value.getResultCode() != null &&
-					!ResultCodes.ignorableCodes.contains(
-							value.getResultCode())) {
-				resultCode = value.getResultCode();
-				inheritedCode = true;
-				break;
-			}
-		}
-		result.addAll(values);
-	}
+//	/**
+//	 * Append a list of Results to this result at once.
+//	 * We need to check each result for a resultCode that is
+//	 * non ignorable.
+//	 * 
+//	 * @param values
+//	 */
+//	public void append(Collection<Result> values) {
+//		for (Result value : values) {
+//			if (value.getResultCode() != null &&
+//					!ResultCodes.ignorableCodes.contains(
+//							value.getResultCode())) {
+//				resultCode = value.getResultCode();
+//				inheritedCode = true;
+//				break;
+//			}
+//		}
+//		result.addAll(values);
+//	}
 }

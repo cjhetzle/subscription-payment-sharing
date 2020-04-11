@@ -38,11 +38,11 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 		Long entryTime = entering(methodName);
 		Result result = new Result();
 		
-		result.appendResult(buildBaseInvoiceRequest(request));
+		result.append(buildBaseInvoiceRequest(request));
 			
-		result.appendResult(getBillingInfoAndSend(request));
+		result.append(getBillingInfoAndSend(request));
 		
-		result.setResultCode(ResultCodes.SUCCESS);
+		result.success();
 		exiting(methodName, entryTime, result);
 		return result;
 	}
@@ -183,7 +183,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 			throw se;
 		}
 		
-		result.setResultCode(ResultCodes.SUCCESS);
+		result.success();
 		exiting(methodName, entryTime, result);
 		return result;
 	}

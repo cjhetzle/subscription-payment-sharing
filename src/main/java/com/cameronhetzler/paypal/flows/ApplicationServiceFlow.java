@@ -5,8 +5,10 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.cameronhetzler.paypal.common.Constants;
+import com.cameronhetzler.paypal.exceptions.ErrorCodes;
 import com.cameronhetzler.paypal.exceptions.ServicesException;
 import com.cameronhetzler.paypal.payload.Payload;
+import com.cameronhetzler.paypal.result.Result;
 
 public abstract class ApplicationServiceFlow extends ApplicationFlow {
 
@@ -15,22 +17,28 @@ public abstract class ApplicationServiceFlow extends ApplicationFlow {
 
 	protected String service;
 	
-	protected void parseAndSetElements(Payload request) throws ServicesException {
-		super.parseAndSetElements(request);
+	@Override
+	protected Result parseAndSetElements(Payload request) {
 		String methodName = "parseAndSetElements";
 		Long entryTime = entering(methodName);
+		Result result = new Result(methodName);
+		
+		result.append(super.parseAndSetElements(request));
 		
 		Map<String, Object> table = request.getTable();
 		
 		if (!table.containsKey(Constants.SERVICE)) {
-			ServicesException e = new ServicesException("Missing Client-ID in payload.");
-			exiting(methodName, entryTime, e);
-			throw e;
+			error("Missing Service in payload.");
+			result.setThrowable(new ServicesException("Missing Service in payload.", ErrorCodes.MISSING_PARAM, null));
+			exiting(methodName, entryTime, result);
+			return result;
 		}
 		
 		this.service = (String) table.get(Constants.SERVICE);
 		
-		exiting(methodName, entryTime);
+		result.success();
+		exiting(methodName, entryTime, result);
+		return result;
 	}
 	
 	public Logger getLogger() {

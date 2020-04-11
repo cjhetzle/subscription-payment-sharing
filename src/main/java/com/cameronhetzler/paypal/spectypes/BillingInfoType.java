@@ -30,11 +30,6 @@ public class BillingInfoType extends BaseType<BillingInfo>{
 	
 	public BillingInfoType create(String jsonFile) throws ServicesException {
 		// TODO Auto-generated method stub
-		try {
-			setInstanceList(load(jsonFile, getListType()));
-		} catch (Exception e) {
-			setInstance(load(jsonFile, getType()));
-		}
-		return this;
+		return create(jsonFile);
 	}
 }

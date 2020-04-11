@@ -59,6 +59,15 @@ public abstract class BaseType<T> implements BaseTypeInt<T> {
 		this.instance = instance;
 	}
 	
+	public BaseTypeInt<T> create(String jsonFile) throws ServicesException {
+		try {
+			setInstanceList(load(jsonFile, getListType()));
+		} catch (Exception e) {
+			setInstance(load(jsonFile, getType()));
+		}
+		return this;
+	}
+	
 	protected void save(String jsonFile, T instance) throws IOException, ServicesException {
 		BufferedWriter bw = null;
 		try {

@@ -25,12 +25,7 @@ public class PaymentDefinitionType extends BaseType<PaymentDefinition> {
 
 	public PaymentDefinitionType create(String jsonFile) throws ServicesException {
 		// TODO Auto-generated method stub
-		try {
-			setInstanceList(load(jsonFile, getListType()));
-		} catch (Exception e) {
-			setInstance(load(jsonFile, getType()));
-		}
-		return this;
+		return create(jsonFile);
 	}
 
 }

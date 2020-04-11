@@ -2,22 +2,55 @@ package com.cameronhetzler.paypal.flows;
 
 import org.apache.log4j.Logger;
 
-import com.cameronhetzler.paypal.common.Constants;
 import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
 import com.cameronhetzler.paypal.spectypes.ChargeModelsType;
 import com.cameronhetzler.paypal.spectypes.CurrencyType;
 import com.cameronhetzler.paypal.spectypes.PaymentDefinitionType;
 import com.cameronhetzler.paypal.spectypes.PlanType;
+import com.cameronhetzler.paypal.spectypes.PlanType.PayCycles;
+import com.paypal.base.rest.PayPalRESTException;
 
 public class SendServiceSubscriptionFromTemplates extends ApplicationServiceFlow {
+	
+	private static final String CLASSNAME = SendServiceSubscriptionFromTemplates.class.getName();
+	private static final String CLASSNAME_SIMPLE = SendServiceSubscriptionFromTemplates.class.getSimpleName();
+	private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
+
+	public Logger getLogger() {
+		// TODO Auto-generated method stub
+		return LOGGER;
+	}
+
+	public String getClassName() {
+		// TODO Auto-generated method stub
+		return CLASSNAME;
+	}
+	
+	public String getSimpleClassName() {
+		return CLASSNAME_SIMPLE;
+	}
 
 	public Result executeApplicationFlow(Payload request) {
+		final String methodName = "executeApplicationFlow";
+		Long entryTime = entering(methodName, request);
+		Result result = new Result(getSimpleClassName() + "." + methodName);
 		
 		PlanType plan = new PlanType();
 //		plan.setName("T-Shirt of the Month Club Plan");
 //		plan.setDescription("Template creation.");
 //		plan.setType("fixed");
+		plan.getInstance().setType(PayCycles.INFINITE.toString());
+		plan.getInstance().setName("Test Plan");
+		plan.getInstance().setDescription("Test Description");
+		
+		try {
+			plan.setInstance(plan.getInstance().create(getContext()));
+		} catch (PayPalRESTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
 		//payment_definitions
 		PaymentDefinitionType paymentDefinition = new PaymentDefinitionType();
@@ -58,17 +91,8 @@ public class SendServiceSubscriptionFromTemplates extends ApplicationServiceFlow
 //
 //		this.instance = plan.create(context);
 		
-		return null;
+		result.success();
+		exiting(methodName, entryTime, result);
+		return result;
 	}
-
-	public Logger getLogger() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getClassName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

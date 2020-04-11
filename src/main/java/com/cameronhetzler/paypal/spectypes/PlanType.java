@@ -14,6 +14,21 @@ import com.paypal.api.payments.Plan;
  *
  */
 public class PlanType extends BaseType<Plan> {
+	
+	public static enum PayCycles {
+		FIXED("FIXED"),
+		INFINITE("INFINITE");
+		
+		private String value;
+		
+		private PayCycles(String value) {
+			this.value = value;
+		}
+		
+		public String toString() {
+			return value.toLowerCase();
+		}
+	}
 
 	public PlanType() {
 		super(new Plan());
@@ -31,11 +46,6 @@ public class PlanType extends BaseType<Plan> {
 
 	public PlanType create(String jsonFile) throws ServicesException {
 		// TODO Auto-generated method stub
-		try {
-			setInstanceList(load(jsonFile, getListType()));
-		} catch (Exception e) {
-			setInstance(load(jsonFile, getType()));
-		}
-		return this;
+		return create(jsonFile);
 	}
 }

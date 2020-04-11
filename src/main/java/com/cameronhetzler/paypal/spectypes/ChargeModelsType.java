@@ -25,12 +25,7 @@ public class ChargeModelsType extends BaseType<ChargeModels> {
 
 	public ChargeModelsType create(String jsonFile) throws ServicesException {
 		// TODO Auto-generated method stub
-		try {
-			setInstance(load(jsonFile, getType()));
-		} catch (Exception e) {
-			setInstanceList(load(jsonFile, getListType()));
-		}
-		return this;
+		return create(jsonFile);
 	}
 
 }

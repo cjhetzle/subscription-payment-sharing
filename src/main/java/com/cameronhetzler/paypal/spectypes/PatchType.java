@@ -3,7 +3,6 @@ package com.cameronhetzler.paypal.spectypes;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import com.cameronhetzler.paypal.exceptions.ServicesException;
 import com.google.gson.reflect.TypeToken;
 import com.paypal.api.payments.Patch;
 
@@ -41,10 +40,5 @@ public class PatchType extends BaseType<Patch> {
 	public Class<Patch> getType() {
 		// TODO Auto-generated method stub
 		return Patch.class;
-	}
-
-	@Override
-	public PatchType create(String jsonFile) throws ServicesException {
-		return create(jsonFile);
 	}
 }

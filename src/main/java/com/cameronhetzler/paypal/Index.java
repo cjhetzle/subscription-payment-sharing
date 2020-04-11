@@ -13,6 +13,7 @@ import com.cameronhetzler.paypal.flows.CancelServiceInvoices;
 import com.cameronhetzler.paypal.flows.CancelSingleServiceInvoice;
 import com.cameronhetzler.paypal.flows.SendServiceInvoices;
 import com.cameronhetzler.paypal.flows.SendServiceInvoicesFromTemplates;
+import com.cameronhetzler.paypal.flows.SendServiceSubscriptionsFromTemplates;
 import com.cameronhetzler.paypal.flows.SendSingleServiceInvoice;
 import com.cameronhetzler.paypal.payload.Classifications;
 import com.cameronhetzler.paypal.payload.Payload;
@@ -103,6 +104,9 @@ public class Index {
 			break;
 		case SEND_SERVICE_INVOICES_FROM_TEMPLATES:
 			flow = new SendServiceInvoicesFromTemplates();
+			break;
+		case SEND_SERVICE_SUBSCRIPTIONS_FROM_TEMPLATES:
+			flow = new SendServiceSubscriptionsFromTemplates();
 			break;
 		default:
 			

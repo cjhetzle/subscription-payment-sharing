@@ -29,22 +29,25 @@ public class Result {
 	private String message;
 	
 	@Getter
-	private AbstractList<String> details;
-	
-	@Getter
-	private AbstractList<Result> results;
-	
-	@Getter
-	private Throwable throwable;
-	
-	@Getter
 	private ResultCodes resultCode;
 	
 	@Getter @Setter
 	private ErrorCodes errorCode;
 	
+	@Getter
+	private Throwable throwable;
+	
+	@Getter
+	private AbstractList<String> details;
+	
+	@Getter
+	private AbstractList<Result> results;
+
+	
 	public void setThrowable(Throwable value) {
-		if (value != null && value instanceof ServicesException) {
+		if (throwable != null || value == null)
+			return;		
+		if (value instanceof ServicesException) {
 			errorCode = ((ServicesException) value).getErrorCode();
 		}
 		if (resultCode == null || ResultCodes.ERROR.getLevel() < resultCode.getLevel())

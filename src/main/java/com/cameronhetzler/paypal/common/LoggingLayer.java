@@ -158,6 +158,10 @@ public abstract class LoggingLayer {
 	}
 	
 	public void error(String message, Result result, Object...objects) {
+		error(message, result, null, objects);
+	}
+	
+	public void error(String message, Result result, Throwable e, Object...objects) {
 		StringBuilder strBldr = new StringBuilder();
 		
 		strBldr.append(message);
@@ -172,6 +176,8 @@ public abstract class LoggingLayer {
 			}
 			strBldr.append(" }");
 		}
+		
+		result.setThrowable(e);
 		
 		if (result != null)
 			result.append(strBldr.toString());

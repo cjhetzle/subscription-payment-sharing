@@ -13,7 +13,7 @@ import com.cameronhetzler.paypal.result.Result;
  */
 public class AddServiceItem extends ApplicationFlow {
 
-	public Result configureAndBuildRequest(Payload request) {
+	public Result executeApplicationFlow(Payload request) {
 		// TODO Auto-generated method stub
 		return null;
 	}

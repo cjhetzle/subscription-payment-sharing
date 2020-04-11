@@ -7,11 +7,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@SuppressWarnings("serial")
 @Getter @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
 @ToString
-public class ServicesException extends Throwable {
+public class ServicesException extends Exception {
 
 	@NonNull
 	private String message;
@@ -19,5 +20,5 @@ public class ServicesException extends Throwable {
 	private ErrorCodes errorCode;
 	
 	private Throwable error;
-		
+	
 }

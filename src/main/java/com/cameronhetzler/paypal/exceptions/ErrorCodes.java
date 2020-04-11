@@ -12,7 +12,8 @@ public enum ErrorCodes {
 	FILE_READ("FILE_READ", "0x2"),
 	FILE_WRITE("FILE_WRITE", "0x3"),
 	TO_JSON("TO_JSON", "0x4"),
-	FROM_JSON("FROM_JSON", "0x5");
+	FROM_JSON("FROM_JSON", "0x5"),
+	NULL_RETURN("NULL_RETURN", "0x6");
 	
 	
 	private String value;

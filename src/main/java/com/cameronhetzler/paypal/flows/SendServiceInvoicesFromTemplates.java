@@ -33,26 +33,16 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 	
 	private Invoice invoice;
 	
-	public Result configureAndBuildRequest(Payload request) {
-		String methodName = "configureAndBuildRequest";
+	public Result executeApplicationFlow(Payload request) throws ServicesException {
+		String methodName = "executeApplicationFlow";
 		Long entryTime = entering(methodName);
 		Result result = new Result();
+		
+		result.appendResult(buildBaseInvoiceRequest(request));
+			
+		result.appendResult(getBillingInfoAndSend(request));
+		
 		result.setResultCode(ResultCodes.SUCCESS);
-		
-		try {
-			
-			parseAndSetElements(request);
-			
-			buildBaseInvoiceRequest(request);
-			
-			getBillingInfoAndSend(request);
-			
-		} catch(ServicesException se) {
-			error("Exception caught in: " + methodName, se);
-			result.setResultCode(ResultCodes.FAILURE);
-			result.setThrowable(se);
-		}
-		
 		exiting(methodName, entryTime, result);
 		return result;
 	}
@@ -65,9 +55,10 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 	 * @param request
 	 * @throws ServicesException
 	 */
-	private void buildBaseInvoiceRequest(Payload request) throws ServicesException {
+	private Result buildBaseInvoiceRequest(Payload request) {
 		String methodName = "buildBaseInvoiceRequest";
 		Long entryTime = entering(methodName, request);
+		Result result = new Result(methodName);		
 		
 		Object object = request.getTable().get(Constants.SERVICE);
 		
@@ -78,15 +69,15 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 			info("Service was parsed and set to: " + this.service);
 		} catch (Exception e) {
 			error("Exception caught.", e);
-			ServicesException se = new ServicesException("Unable to cast service <Object> to <String>.", ErrorCodes.BASIC_ERROR, e);
-			exiting(methodName, entryTime, se);
-			throw se;
+			result.setThrowable(new ServicesException("Unable to cast service <Object> to <String>.", ErrorCodes.BASIC_ERROR, e));
+			exiting(methodName, entryTime, result);
+			return result;
 		} finally {
 			if (service == null) {
 				error("Service is null. Throwing error.");
-				ServicesException se = new ServicesException("Parsed [Service] was null.");
-				exiting(methodName, entryTime, se);
-				throw se;
+				result.setThrowable(new ServicesException("Parsed [Service] was null.", ErrorCodes.NULL_RETURN, null));
+				exiting(methodName, entryTime, result);
+				return result;
 			}
 		}
 		
@@ -95,9 +86,9 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 			merchantInfo.create(Constants.MERCHANTINFO_FILE + this.service + Constants.JSON);
 		} catch (Exception e) {
 			error("Exception caught.", e);
-			ServicesException se = new ServicesException("Unable to load MerchantInfo file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
-			exiting(methodName, entryTime, se);
-			throw se;
+			result.setThrowable(new ServicesException("Unable to load MerchantInfo file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e));
+			exiting(methodName, entryTime, result);
+			return result;
 		}
 		
 		CurrencyType currency = new CurrencyType();
@@ -105,9 +96,9 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 			currency.create(Constants.CURRENCY_FILE + this.service + Constants.JSON);
 		} catch (Exception e) {
 			error("Exception caught.", e);
-			ServicesException se = new ServicesException("Unable to load Currency file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
-			exiting(methodName, entryTime, se);
-			throw se;
+			result.setThrowable(new ServicesException("Unable to load MerchantInfo file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e));
+			exiting(methodName, entryTime, result);
+			return result;
 		}
 		
 		TaxType tax = new TaxType();
@@ -115,9 +106,9 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 			tax.create(Constants.TAX_FILE + this.service + Constants.JSON);
 		} catch (Exception e) {
 			error("Exception caught.", e);
-			ServicesException se = new ServicesException("Unable to load Tax file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
-			exiting(methodName, entryTime, se);
-			throw se;
+			result.setThrowable(new ServicesException("Unable to load Tax file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e));
+			exiting(methodName, entryTime, result);
+			return result;
 		}
 		
 		InvoiceItemType item = new InvoiceItemType();
@@ -125,9 +116,9 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 			item.create(Constants.ITEM_FILE + this.service + Constants.JSON);
 		} catch (Exception e) {
 			error("Exception caught.", e);
-			ServicesException se = new ServicesException("Unable to load Item file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
-			exiting(methodName, entryTime, se);
-			throw se;
+			result.setThrowable(new ServicesException("Unable to load Item file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e));
+			exiting(methodName, entryTime, result);
+			return result;
 		}
 		
 		item.getInstance().setUnitPrice(currency.getInstance());
@@ -139,9 +130,9 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 			invoice.create(Constants.INVOICE_FILE + this.service + Constants.JSON);
 		} catch (Exception e) {
 			error("Exception caught.", e);
-			ServicesException se = new ServicesException("Unable to load Invoice file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
-			exiting(methodName, entryTime, se);
-			throw se;
+			result.setThrowable(new ServicesException("Unable to load Invoice file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e));
+			exiting(methodName, entryTime, result);
+			return result;
 		}
 		
 		invoice.getInstance().setMerchantInfo(merchantInfo.getInstance());
@@ -149,12 +140,16 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 		invoice.getInstance().setItems(Arrays.asList(item.getInstance()));
 		
 		this.invoice = invoice.getInstance();
-		exiting(methodName, entryTime);
+		
+		result.setResultCode(ResultCodes.SUCCESS);
+		exiting(methodName, entryTime, result);
+		return result;
 	}
 	
-	private void getBillingInfoAndSend(Payload request) throws ServicesException {
+	private Result getBillingInfoAndSend(Payload request) throws ServicesException {
 		String methodName = "getBillingInfoAndSend";
 		Long entryTime = entering(methodName, request);
+		Result result = new Result(methodName);
 		
 		BillingInfoType billingInfo = new BillingInfoType();
 		try {
@@ -188,7 +183,9 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 			throw se;
 		}
 		
-		exiting(methodName, entryTime);
+		result.setResultCode(ResultCodes.SUCCESS);
+		exiting(methodName, entryTime, result);
+		return result;
 	}
 	
 	public Logger getLogger() {

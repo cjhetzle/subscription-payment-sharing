@@ -24,6 +24,7 @@ public class Constants {
 	public static final String TAX_FILE = "tax_";
 	public static final String ITEM_FILE = "item_";
 	public static final String INVOICE_FILE = "invoice_";
+	public static final String PAYMENTMENTDEFINITION_FILE = "paymentdefinition_";
 	
 	// Folder helpers
 	public static final String INVOICE_FOLDER = "/invoices";

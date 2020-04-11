@@ -8,6 +8,8 @@ import org.jasypt.util.text.BasicTextEncryptor;
 import com.cameronhetzler.paypal.exceptions.ErrorCodes;
 import com.cameronhetzler.paypal.exceptions.ServicesException;
 import com.cameronhetzler.paypal.payload.Payload;
+import com.cameronhetzler.paypal.result.Result;
+import com.cameronhetzler.paypal.result.ResultCodes;
 import com.cameronhetzler.paypal.common.Constants;
 import com.paypal.base.rest.APIContext;
 
@@ -25,6 +27,30 @@ public abstract class ApplicationFlow implements ApplicationFlowInt {
 	@Getter
 	private APIContext context;
 	private String environment;
+	
+	public Result configureAndBuildRequest(Payload request) {
+		String methodName = "configureAndBuildRequest";
+		Long entryTime = entering(methodName);
+		Result result = new Result();
+		result.setResultCode(ResultCodes.SUCCESS);
+		
+		try {
+			
+			parseAndSetElements(request);
+			
+			executeApplicationFlow(request);
+			
+		} catch(ServicesException se) {
+			error("Exception caught in: " + methodName, se);
+			result.setResultCode(ResultCodes.ERROR);
+			result.setThrowable(se);
+		}
+		
+		exiting(methodName, entryTime, result);
+		return result;
+	}
+	
+	protected abstract Result executeApplicationFlow(Payload request) throws ServicesException;
 	
 	/**
 	 * 
@@ -54,17 +80,17 @@ public abstract class ApplicationFlow implements ApplicationFlowInt {
 		}
 		
 		try {
-			clientID = textEncryptor.decrypt((String)table.get(Constants.CLIENT_ID));
-			clientSecret = textEncryptor.decrypt((String)table.get(Constants.CLIENT_SECRET));
+			this.clientID = textEncryptor.decrypt((String)table.get(Constants.CLIENT_ID));
+			this.clientSecret = textEncryptor.decrypt((String)table.get(Constants.CLIENT_SECRET));
 		} catch (Exception e) {
 			ServicesException _e = new ServicesException("Unable to decrypt clientID and clientSecret. Make sure there is not a casting error to <String>", ErrorCodes.BASIC_ERROR, e);
 			exiting(methodName, entryTime, _e);
 			throw _e;
 		}
 		
-		environment = (String)table.get(Constants.ENVIRONMENT);
+		this.environment = (String)table.get(Constants.ENVIRONMENT);
 		
-		context = new APIContext(clientID, clientSecret, environment);
+		this.context = new APIContext(clientID, clientSecret, environment);
 		
 		exiting(methodName, entryTime);
 	}

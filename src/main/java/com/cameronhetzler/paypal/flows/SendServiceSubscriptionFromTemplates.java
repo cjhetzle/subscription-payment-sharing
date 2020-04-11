@@ -10,9 +10,9 @@ import com.cameronhetzler.paypal.spectypes.CurrencyType;
 import com.cameronhetzler.paypal.spectypes.PaymentDefinitionType;
 import com.cameronhetzler.paypal.spectypes.PlanType;
 
-public class SendServiceSubscriptionFromTemplates extends ApplicationFlow {
+public class SendServiceSubscriptionFromTemplates extends ApplicationServiceFlow {
 
-	public Result configureAndBuildRequest(Payload request) {
+	public Result executeApplicationFlow(Payload request) {
 		
 		PlanType plan = new PlanType();
 //		plan.setName("T-Shirt of the Month Club Plan");
@@ -21,7 +21,7 @@ public class SendServiceSubscriptionFromTemplates extends ApplicationFlow {
 
 		//payment_definitions
 		PaymentDefinitionType paymentDefinition = new PaymentDefinitionType();
-		paymentDefinition.create(Constants.PAYMENTDEFINITION_FILE + Constants.NETFLIX + Constants.JSON;)
+		//paymentDefinition.create(null);
 //		paymentDefinition.setName("Regular Payments");
 //		paymentDefinition.setType("REGULAR");
 //		paymentDefinition.setFrequency("MONTH");
@@ -47,16 +47,16 @@ public class SendServiceSubscriptionFromTemplates extends ApplicationFlow {
 		plan.getInstance().setPaymentDefinitions(paymentDefinition.getInstanceList());
 
 		//merchant_preferences
-		MerchantPreferences merchantPreferences = new MerchantPreferences();
-		merchantPreferences.setSetupFee(currency);
-		merchantPreferences.setCancelUrl("http://www.cancel.com");
-		merchantPreferences.setReturnUrl("http://www.return.com");
-		merchantPreferences.setMaxFailAttempts("0");
-		merchantPreferences.setAutoBillAmount("YES");
-		merchantPreferences.setInitialFailAmountAction("CONTINUE");
-		plan.setMerchantPreferences(merchantPreferences);
-
-		this.instance = plan.create(context);
+//		MerchantPreferences merchantPreferences = new MerchantPreferences();
+//		merchantPreferences.setSetupFee(currency);
+//		merchantPreferences.setCancelUrl("http://www.cancel.com");
+//		merchantPreferences.setReturnUrl("http://www.return.com");
+//		merchantPreferences.setMaxFailAttempts("0");
+//		merchantPreferences.setAutoBillAmount("YES");
+//		merchantPreferences.setInitialFailAmountAction("CONTINUE");
+//		plan.setMerchantPreferences(merchantPreferences);
+//
+//		this.instance = plan.create(context);
 		
 		return null;
 	}

@@ -11,8 +11,8 @@ public class AddBillingInfo extends ApplicationFlow {
 	private static final String CLASSNAME = AddBillingInfo.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(AddBillingInfo.class);
 
-	public Result configureAndBuildRequest(Payload request) {
-		String methodName = "configureAndBuildRequest";
+	public Result executeApplicationFlow(Payload request) {
+		String methodName = "executeApplicationFlow";
 		Long entryTime = entering(methodName, request);
 		Result result = null;
 		

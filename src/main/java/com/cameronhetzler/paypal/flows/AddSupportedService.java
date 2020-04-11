@@ -5,22 +5,23 @@ import org.apache.log4j.Logger;
 import com.cameronhetzler.paypal.exceptions.ServicesException;
 import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
+import com.cameronhetzler.paypal.result.ResultCodes;
 
 /**
  * 
  * @author Cameron Hetzler
  *
  */
-public class AddSupportedService extends ApplicationFlow {
+public class AddSupportedService extends ApplicationServiceFlow {
 
 	private static final String CLASSNAME = AddSupportedService.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(AddSupportedService.class);
 	
-	public Result configureAndBuildRequest(Payload request) {
-		String methodName = "configureAndBuildRequest";
+	public Result executeApplicationFlow(Payload request) {
+		String methodName = "executeApplicationFlow";
 		Long entryTime = entering(methodName, request);
-		Result result = null;
-		
+		Result result = new Result();
+		result.setResultCode(ResultCodes.SUCCESS);
 		
 		exiting(methodName, entryTime, result);
 		return result;
@@ -33,5 +34,4 @@ public class AddSupportedService extends ApplicationFlow {
 	public String getClassName() {
 		return CLASSNAME;
 	}
-
 }

@@ -11,6 +11,7 @@ import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
 import com.cameronhetzler.paypal.result.ResultCodes;
 import com.cameronhetzler.paypal.common.Constants;
+import com.cameronhetzler.paypal.common.LoggingLayer;
 import com.paypal.base.rest.APIContext;
 
 import lombok.Getter;
@@ -20,8 +21,21 @@ import lombok.Getter;
  * @author Cameron Hetzler
  *
  */
-public abstract class ApplicationFlow implements ApplicationFlowInt {
+public abstract class ApplicationFlow
+extends LoggingLayer
+implements ApplicationFlowInt {
+	
+	private static final String CLASSNAME = ApplicationFlow.class.getName();
+	private static final String CLASSNAME_SIMPLE = ApplicationFlow.class.getSimpleName();
 
+	protected String getClassName() {
+		return CLASSNAME;
+	}
+	
+	protected String getSimpleClassName() {
+		return CLASSNAME_SIMPLE;
+	}
+	
 	private String clientID;
 	private String clientSecret;
 	@Getter
@@ -31,21 +45,22 @@ public abstract class ApplicationFlow implements ApplicationFlowInt {
 	public Result configureAndBuildRequest(Payload request) {
 		String methodName = "configureAndBuildRequest";
 		Long entryTime = entering(methodName);
-		Result result = new Result();
-		result.setResultCode(ResultCodes.SUCCESS);
+		Result result = new Result(this.getSimpleClassName() + "." + methodName);
 		
 		try {
 			
-			parseAndSetElements(request);
+			result.append(parseAndSetElements(request));
 			
-			executeApplicationFlow(request);
+			result.append(executeApplicationFlow(request));
 			
 		} catch(ServicesException se) {
 			error("Exception caught in: " + methodName, se);
 			result.setResultCode(ResultCodes.ERROR);
 			result.setThrowable(se);
+			return result;
 		}
 		
+		result.success();
 		exiting(methodName, entryTime, result);
 		return result;
 	}
@@ -56,9 +71,10 @@ public abstract class ApplicationFlow implements ApplicationFlowInt {
 	 * 
 	 * @param request
 	 */
-	protected void parseAndSetElements(Payload request) throws ServicesException {
-		String methodName = "parseAndSetElements";
+	protected Result parseAndSetElements(Payload request) {
+		final String methodName = "parseAndSetElements";
 		Long entryTime = entering(methodName, request);
+		Result result = new Result(getSimpleClassName() + "." + methodName);
 		
 		BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
 		textEncryptor.setPassword("this-is-not-your-normal-password");
@@ -66,167 +82,41 @@ public abstract class ApplicationFlow implements ApplicationFlowInt {
 		Map<String, Object> table = request.getTable();
 		
 		if (!table.containsKey(Constants.CLIENT_ID)) {
-			ServicesException e = new ServicesException("Missing Client-ID in payload.");
-			exiting(methodName, entryTime, e);
-			throw e;
+			error("Missing Client-ID in payload.", result);
+			result.setThrowable(new ServicesException("Missing Client-ID in payload.", ErrorCodes.MISSING_PARAM, null));
+			exiting(methodName, entryTime, result);
+			return result;
 		} else if (!table.containsKey(Constants.CLIENT_SECRET)) {
-			ServicesException e = new ServicesException("Missing Client-Secret in payload.");
-			exiting(methodName, entryTime, e);
-			throw e;
+			error("Missing Client-Secret in payload.", result);
+			result.setThrowable(new ServicesException("Missing Client-Secret in payload.", ErrorCodes.MISSING_PARAM, null));
+			exiting(methodName, entryTime, result);
+			return result;
 		} else if (!table.containsKey(Constants.ENVIRONMENT)) {
-			ServicesException e = new ServicesException("Missing Environment Type in payload.");
-			exiting(methodName, entryTime, e);
-			throw e;
+			error("Missing Environment Type in payload.", result);
+			result.setThrowable(new ServicesException("Missing Environment Type in payload.", ErrorCodes.MISSING_PARAM, null));
+			exiting(methodName, entryTime, result);
+			return result;
 		}
 		
 		try {
 			this.clientID = textEncryptor.decrypt((String)table.get(Constants.CLIENT_ID));
 			this.clientSecret = textEncryptor.decrypt((String)table.get(Constants.CLIENT_SECRET));
 		} catch (Exception e) {
-			ServicesException _e = new ServicesException("Unable to decrypt clientID and clientSecret. Make sure there is not a casting error to <String>", ErrorCodes.BASIC_ERROR, e);
-			exiting(methodName, entryTime, _e);
-			throw _e;
+			error("Error caught in: " + methodName, result, e);
+			result.setThrowable(new ServicesException("Unable to decrypt clientID and clientSecret. Make sure there is not a casting error to <String>", ErrorCodes.BASIC_ERROR, e));
+			exiting(methodName, entryTime, result);
+			return result;
 		}
 		
 		this.environment = (String)table.get(Constants.ENVIRONMENT);
+		info("Environment set to: " + environment, result);
 		
 		this.context = new APIContext(clientID, clientSecret, environment);
+		info("Created API context.", result);
 		
-		exiting(methodName, entryTime);
+		result.success();
+		exiting(methodName, entryTime, result);
+		return result;
 	}
 	
-	public Long entering(String methodName, Object...objects) {
-		
-		StringBuilder strBldr = new StringBuilder();
-		
-		strBldr.append("Entering: ");
-		strBldr.append(getClassName());
-		strBldr.append('.');
-		strBldr.append(methodName);
-		
-		if (objects != null) {
-			strBldr.append(". Params: { ");
-			for (Object obj : objects) {
-				strBldr.append(obj.getClass().getName());
-				strBldr.append(": ");
-				strBldr.append(obj.toString());
-				strBldr.append(", ");
-			}
-			strBldr.append(" }");
-		}
-		
-		Logger logger = getLogger();
-		logger.debug(strBldr.toString());
-		
-		return System.currentTimeMillis();
-	}
-	
-	public void exiting(String methodName, Long entryTime, Object...objects) {
-		
-		StringBuilder strBldr = new StringBuilder();
-		
-		strBldr.append("Exiting: ");
-		strBldr.append(getClassName());
-		strBldr.append('.');
-		strBldr.append(methodName);
-		strBldr.append(". Total Time: ");
-		
-		Long deltaTime = System.currentTimeMillis() - entryTime;
-		strBldr.append(deltaTime);
-		
-		if (objects != null) {
-			strBldr.append(". Result: { ");
-			for (Object obj : objects) {
-				strBldr.append(obj.getClass().getName());
-				strBldr.append(": ");
-				strBldr.append(obj.toString());
-				strBldr.append(", ");
-			}
-			strBldr.append(" }");
-		}
-		
-		Logger logger = getLogger();
-		logger.debug(strBldr.toString());
-	}
-	
-	public void info(String message, Object...objects) {
-		
-		StringBuilder strBldr = new StringBuilder();
-		
-		strBldr.append(message);
-		
-		if (objects != null) {
-			strBldr.append(". Objects: { ");
-			for (Object obj : objects) {
-				strBldr.append(obj.getClass().getName());
-				strBldr.append(": ");
-				strBldr.append(obj.toString());
-				strBldr.append(", ");
-			}
-			strBldr.append(" }");
-		}
-		
-		Logger logger = getLogger();
-		logger.info(strBldr.toString());
-	}
-	
-	public void debug(String message, Object...objects) {
-		StringBuilder strBldr = new StringBuilder();
-		
-		strBldr.append(message);
-		
-		if (objects != null) {
-			strBldr.append(". Objects: { ");
-			for (Object obj : objects) {
-				strBldr.append(obj.getClass().getName());
-				strBldr.append(": ");
-				strBldr.append(obj.toString());
-				strBldr.append(", ");
-			}
-			strBldr.append(" }");
-		}
-		
-		Logger logger = getLogger();
-		logger.debug(strBldr.toString());
-	}
-	
-	public void warning(String message, Object...objects) {
-		StringBuilder strBldr = new StringBuilder();
-		
-		strBldr.append(message);
-		
-		if (objects != null) {
-			strBldr.append(". Objects: { ");
-			for (Object obj : objects) {
-				strBldr.append(obj.getClass().getName());
-				strBldr.append(": ");
-				strBldr.append(obj.toString());
-				strBldr.append(", ");
-			}
-			strBldr.append(" }");
-		}
-		
-		Logger logger = getLogger();
-		logger.warn(strBldr.toString());
-	}
-	
-	public void error(String message, Object...objects) {
-		StringBuilder strBldr = new StringBuilder();
-		
-		strBldr.append(message);
-		
-		if (objects != null) {
-			strBldr.append(". Objects: { ");
-			for (Object obj : objects) {
-				strBldr.append(obj.getClass().getName());
-				strBldr.append(": ");
-				strBldr.append(obj.toString());
-				strBldr.append(", ");
-			}
-			strBldr.append(" }");
-		}
-		
-		Logger logger = getLogger();
-		logger.error(strBldr.toString());
-	}
 }

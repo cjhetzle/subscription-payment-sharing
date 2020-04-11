@@ -1,8 +1,5 @@
 package com.cameronhetzler.paypal.flows;
 
-import org.apache.log4j.Logger;
-
-import com.cameronhetzler.paypal.exceptions.ServicesException;
 import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
 
@@ -37,15 +34,4 @@ interface ApplicationFlowInt {
 	 */
 	public void exiting(String methodName, Long entryTime, Object...objects);
 	
-	/**
-	 * 
-	 * @return
-	 */
-	Logger getLogger();
-	
-	/**
-	 * 
-	 * @return
-	 */
-	String getClassName();
 }

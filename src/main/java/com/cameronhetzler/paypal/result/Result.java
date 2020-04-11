@@ -1,6 +1,8 @@
 package com.cameronhetzler.paypal.result;
 
+import java.util.AbstractList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -27,10 +29,10 @@ public class Result {
 	private String message;
 	
 	@Getter
-	private Queue<String> payload;
+	private AbstractList<String> details;
 	
 	@Getter
-	private Stack<Result> result;
+	private AbstractList<Result> results;
 	
 	@Getter
 	private Throwable throwable;
@@ -41,18 +43,30 @@ public class Result {
 	@Getter @Setter
 	private ErrorCodes errorCode;
 	
-	private boolean inheritedCode = false;
-	
 	public void setThrowable(Throwable value) {
-		if (value instanceof ServicesException) {
+		if (value != null && value instanceof ServicesException) {
 			errorCode = ((ServicesException) value).getErrorCode();
 		}
-		resultCode = ResultCodes.ERROR;
+		if (resultCode == null || ResultCodes.ERROR.getLevel() < resultCode.getLevel())
+			resultCode = ResultCodes.ERROR;
 		throwable = value;
 	}
 	
+	public void success() {
+		this.setResultCode(ResultCodes.SUCCESS);
+	}
+	
+	public void error() {
+		this.setResultCode(ResultCodes.ERROR);
+	}
+	
+	public void warning() {
+		this.setResultCode(ResultCodes.WARNING);
+	}
+	
 	public void setResultCode(ResultCodes value) {
-		if (!inheritedCode)
+		if (resultCode == null || value != null && 
+				value.getLevel() < resultCode.getLevel())
 			resultCode = value;
 	}
 	
@@ -60,12 +74,14 @@ public class Result {
 		this.message = value;
 	}
 
-	public void appendPayload(String value) {
-		payload.add(value);
+	public void append(String value) {
+		if (details == null) details = new LinkedList<String>();
+		details.add(value);
 	}
 	
-	public void appendPayload(Collection<String> values) {
-		payload.addAll(values);
+	public void append(Collection<String> values) {
+	if (details == null) details = new LinkedList<String>();
+		details.addAll(values);
 	}
 	
 	/**
@@ -74,33 +90,32 @@ public class Result {
 	 * 
 	 * @param value
 	 */
-	public void appendResult(Result value) {
-		if (value.getResultCode() != null &&
-				!ResultCodes.ignorableCodes.contains(
-						value.getResultCode())) {
+	public void append(Result value) {
+		if (resultCode == null || value.getResultCode() != null &&
+				value.getResultCode().getLevel() < resultCode.getLevel()) {
 			resultCode = value.getResultCode();
-			inheritedCode = true;
 		}
-		result.add(value);
+		if (results == null) results = new LinkedList<Result>();
+		results.add(value);
 	}
 	
-	/**
-	 * Append a list of Results to this result at once.
-	 * We need to check each result for a resultCode that is
-	 * non ignorable.
-	 * 
-	 * @param values
-	 */
-	public void appendResult(Collection<Result> values) {
-		for (Result value : values) {
-			if (value.getResultCode() != null &&
-					!ResultCodes.ignorableCodes.contains(
-							value.getResultCode())) {
-				resultCode = value.getResultCode();
-				inheritedCode = true;
-				break;
-			}
-		}
-		result.addAll(values);
+	public String toStringSimpler() {
+		StringBuilder strBldr = new StringBuilder();
+		
+		strBldr.append("Result(");
+		
+		strBldr.append("message=" + String.valueOf(message));
+		
+		strBldr.append("details=" + String.valueOf(details));
+		
+		strBldr.append("resultCode=" + String.valueOf(resultCode));
+		
+		strBldr.append("errorCode=" + String.valueOf(errorCode));
+		
+		strBldr.append("throwable=" + String.valueOf(throwable));
+		
+		strBldr.append(")");
+		
+		return strBldr.toString();
 	}
 }

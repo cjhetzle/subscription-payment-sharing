@@ -8,7 +8,6 @@ import org.jasypt.util.text.BasicTextEncryptor;
 
 import com.cameronhetzler.paypal.flows.AddBillingInfo;
 import com.cameronhetzler.paypal.flows.AddServiceItem;
-import com.cameronhetzler.paypal.flows.AddSupportedService;
 import com.cameronhetzler.paypal.flows.ApplicationFlow;
 import com.cameronhetzler.paypal.flows.CancelServiceInvoices;
 import com.cameronhetzler.paypal.flows.CancelSingleServiceInvoice;
@@ -19,8 +18,7 @@ import com.cameronhetzler.paypal.payload.Classifications;
 import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
 import com.cameronhetzler.paypal.common.Constants;
-import com.cameronhetzler.paypal.common.SupportedServices;
-import com.cameronhetzler.paypal.exceptions.ServicesException;
+import com.cameronhetzler.paypal.common.Services;
 
 /**
  * 
@@ -64,7 +62,7 @@ public class Index {
 		table.put(Constants.CLIENT_ID, textEncryptor.encrypt(clientID));
 		table.put(Constants.CLIENT_SECRET, textEncryptor.encrypt(clientSecret));
 		table.put(Constants.ENVIRONMENT, environment);
-		table.put(Constants.SERVICE, SupportedServices.NETFLIX.toString());
+		table.put(Constants.SERVICE, Services.NETFLIX.toString());
 		
 		request.setTable(table);
 		
@@ -87,9 +85,6 @@ public class Index {
 			break;
 		case ADD_BILLINGINFO:
 			flow = new AddBillingInfo();
-			break;
-		case ADD_SUPPORTED_SERVICE:
-			flow = new AddSupportedService();
 			break;
 		case ADD_SERVICE_ITEM:
 			flow = new AddServiceItem();

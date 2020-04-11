@@ -1,6 +1,14 @@
 package com.cameronhetzler.paypal.common;
 
-public enum SupportedServices {
+/**
+ * Programmed list of Named
+ * services. This will be a
+ * text file eventually.
+ * 
+ * @author Cameron Hetzler
+ *
+ */
+public enum Services {
 
 	NETFLIX("netflix"),
 	SPOTIFY("spotify"),
@@ -9,8 +17,9 @@ public enum SupportedServices {
 	
 	private String value;
 	
-	private SupportedServices(String value) {
+	private Services(String value) {
 		this.value = value;
+		Constants.SupportedServices.add(this);
 	}
 	
 	public String toString() {

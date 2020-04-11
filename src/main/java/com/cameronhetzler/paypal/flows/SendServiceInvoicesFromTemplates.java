@@ -10,7 +10,6 @@ import com.cameronhetzler.paypal.exceptions.ErrorCodes;
 import com.cameronhetzler.paypal.exceptions.ServicesException;
 import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
-import com.cameronhetzler.paypal.result.ResultCodes;
 import com.cameronhetzler.paypal.spectypes.BillingInfoType;
 import com.cameronhetzler.paypal.spectypes.CurrencyType;
 import com.cameronhetzler.paypal.spectypes.InvoiceItemType;
@@ -27,8 +26,9 @@ import com.paypal.base.rest.PayPalRESTException;
  *
  */
 public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
-
+	
 	private static final String CLASSNAME = SendServiceInvoicesFromTemplates.class.getName();
+	private static final String CLASSNAME_SIMPLE = SendServiceInvoicesFromTemplates.class.getSimpleName();
 	private static final Logger LOGGER = Logger.getLogger(SendServiceInvoicesFromTemplates.class);
 	
 	private Invoice invoice;
@@ -36,13 +36,13 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 	public Result executeApplicationFlow(Payload request) throws ServicesException {
 		String methodName = "executeApplicationFlow";
 		Long entryTime = entering(methodName);
-		Result result = new Result();
+		Result result = new Result(getSimpleClassName() + "." + methodName);
 		
-		result.appendResult(buildBaseInvoiceRequest(request));
+		result.append(buildBaseInvoiceRequest(request));
 			
-		result.appendResult(getBillingInfoAndSend(request));
+		result.append(getBillingInfoAndSend(request));
 		
-		result.setResultCode(ResultCodes.SUCCESS);
+		result.success();
 		exiting(methodName, entryTime, result);
 		return result;
 	}
@@ -58,7 +58,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 	private Result buildBaseInvoiceRequest(Payload request) {
 		String methodName = "buildBaseInvoiceRequest";
 		Long entryTime = entering(methodName, request);
-		Result result = new Result(methodName);		
+		Result result = new Result(getSimpleClassName() + "." + methodName);		
 		
 		Object object = request.getTable().get(Constants.SERVICE);
 		
@@ -84,6 +84,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 		MerchantInfoType merchantInfo = new MerchantInfoType();
 		try {
 			merchantInfo.create(Constants.MERCHANTINFO_FILE + this.service + Constants.JSON);
+			info("Merchant Info Created.", result);
 		} catch (Exception e) {
 			error("Exception caught.", e);
 			result.setThrowable(new ServicesException("Unable to load MerchantInfo file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e));
@@ -94,6 +95,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 		CurrencyType currency = new CurrencyType();
 		try {
 			currency.create(Constants.CURRENCY_FILE + this.service + Constants.JSON);
+			info("Currency Created.", result);
 		} catch (Exception e) {
 			error("Exception caught.", e);
 			result.setThrowable(new ServicesException("Unable to load MerchantInfo file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e));
@@ -104,6 +106,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 		TaxType tax = new TaxType();
 		try {
 			tax.create(Constants.TAX_FILE + this.service + Constants.JSON);
+			info("Tax Created.", result);
 		} catch (Exception e) {
 			error("Exception caught.", e);
 			result.setThrowable(new ServicesException("Unable to load Tax file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e));
@@ -114,6 +117,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 		InvoiceItemType item = new InvoiceItemType();
 		try {
 			item.create(Constants.ITEM_FILE + this.service + Constants.JSON);
+			info("Item Created.", result);
 		} catch (Exception e) {
 			error("Exception caught.", e);
 			result.setThrowable(new ServicesException("Unable to load Item file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e));
@@ -128,6 +132,7 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 		InvoiceType invoice = new InvoiceType();
 		try {
 			invoice.create(Constants.INVOICE_FILE + this.service + Constants.JSON);
+			info("Invoice Created.", result);
 		} catch (Exception e) {
 			error("Exception caught.", e);
 			result.setThrowable(new ServicesException("Unable to load Invoice file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e));
@@ -141,23 +146,25 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 		
 		this.invoice = invoice.getInstance();
 		
-		result.setResultCode(ResultCodes.SUCCESS);
+		result.success();
 		exiting(methodName, entryTime, result);
 		return result;
 	}
 	
-	private Result getBillingInfoAndSend(Payload request) throws ServicesException {
+	private Result getBillingInfoAndSend(Payload request) {
 		String methodName = "getBillingInfoAndSend";
 		Long entryTime = entering(methodName, request);
-		Result result = new Result(methodName);
+		Result result = new Result(getSimpleClassName() + "." + methodName);
 		
 		BillingInfoType billingInfo = new BillingInfoType();
 		try {
 			billingInfo.create(Constants.BILLINGINFO_FILE + this.service + Constants.JSON);
+			info("BillingInfo Created.", result);
 		} catch (Exception e) {
-			ServicesException se = new ServicesException("Unable to load BillingInfo file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e);
-			exiting(methodName, entryTime, se);
-			throw se;
+			error("Unable to load BillingInfo file for service: " + this.service + ". Make sure file exists.", result);
+			result.setThrowable(new ServicesException("Unable to load BillingInfo file for service: " + this.service + ". Make sure file exists.", ErrorCodes.FILE_READ, e));
+			exiting(methodName, entryTime, result);
+			return result;
 		}
 		
 		// this could use some fall back
@@ -173,17 +180,18 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 				// with invoice id, send out invoice
 				invoice.send(getContext());
 				
-				info("Successfully send out invoice: " + invoice.getId());
+				info("Successfully send out invoice: " + invoice.getId(), result);
 				
 				invoice = this.invoice;
 			}
 		} catch (PayPalRESTException pre) {
-			ServicesException se = new ServicesException("Error while creating Invoices. Make sure template data is correct.", ErrorCodes.BASIC_ERROR, pre);
-			exiting(methodName, entryTime, se);
-			throw se;
+			error("Error while creating Invoices. Make sure template data is correct.", result);
+			result.setThrowable(new ServicesException("Error while creating Invoices. Make sure template data is correct.", ErrorCodes.BASIC_ERROR, pre));
+			exiting(methodName, entryTime, result);
+			return result;
 		}
 		
-		result.setResultCode(ResultCodes.SUCCESS);
+		result.success();
 		exiting(methodName, entryTime, result);
 		return result;
 	}
@@ -194,6 +202,12 @@ public class SendServiceInvoicesFromTemplates extends ApplicationServiceFlow {
 
 	public String getClassName() {
 		return CLASSNAME;
+	}
+
+	@Override
+	protected String getSimpleClassName() {
+		// TODO Auto-generated method stub
+		return CLASSNAME_SIMPLE;
 	}
 	
 }

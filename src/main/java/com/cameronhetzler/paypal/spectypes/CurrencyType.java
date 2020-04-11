@@ -1,7 +1,6 @@
 package com.cameronhetzler.paypal.spectypes;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.List;
 
 import com.cameronhetzler.paypal.exceptions.ServicesException;
@@ -19,23 +18,24 @@ public class CurrencyType extends BaseType<Currency> {
 		super(new Currency());
 	}
 
-	public Type getType() {
+	public Type getListType() {
 		// TODO Auto-generated method stub
 		return new TypeToken<List<Currency>>(){}.getType();
 	}
 
-	public Class<Currency> getSpecType() {
+	public Class<Currency> getType() {
 		// TODO Auto-generated method stub
 		return Currency.class;
 	}
 
-	public List<Currency> create(String jsonFile) throws ServicesException {
+	public CurrencyType create(String jsonFile) throws ServicesException {
 		// TODO Auto-generated method stub
 		try {
-			return load(jsonFile, getType());
+			setInstanceList(load(jsonFile, getListType()));
 		} catch (Exception e) {
-			return Arrays.asList( load(jsonFile, getSpecType()) );
+			setInstance(load(jsonFile, getType()));
 		}
+		return this;
 	}
 
 }

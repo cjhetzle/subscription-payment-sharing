@@ -1,7 +1,6 @@
 package com.cameronhetzler.paypal.spectypes;
 
 import java.lang.reflect.Type;
-import java.util.List;
 
 import com.cameronhetzler.paypal.exceptions.ServicesException;
 
@@ -13,9 +12,29 @@ import com.cameronhetzler.paypal.exceptions.ServicesException;
  */
 interface BaseTypeInt<T> {
 	
-	public Type getType();
+	/**
+	 * Get the SDK type in Token List form.
+	 * This is meant for serializing Json Files.
+	 * 
+	 * @return Type
+	 */
+	public Type getListType();
 	
-	public Class<T> getSpecType();
+	/**
+	 * Get the SDK type class.
+	 * This is meant for serializing Json Files.
+	 * 
+	 * @return Class<T>
+	 */
+	public Class<T> getType();
 	
-	List<T> create(String jsonFile) throws ServicesException;
+	/**
+	 * Abstracted create method will create object from template file
+	 * with provided jsonFile String.
+	 * 
+	 * @param jsonFile The file name and relative path from Resources.
+	 * @return 
+	 * @throws ServicesException
+	 */
+	BaseTypeInt<T> create(String jsonFile) throws ServicesException;
 }

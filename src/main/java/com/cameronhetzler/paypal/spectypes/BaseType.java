@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,19 +25,38 @@ import lombok.Setter;
  */
 public abstract class BaseType<T> implements BaseTypeInt<T> {
 
-	@Getter @Setter
+	@Setter
 	protected T instance;
-	@Getter @Setter
+	@Setter
 	protected List<T> instanceList;
 	
 	private String fileString;
 	
-	public BaseType(T instance) {
-		this.instance = instance;
+	/**
+	 * Return a single instance. If instance is null,
+	 * try to pull from the list of instances. If that is null,
+	 * return null.
+	 * 
+	 * @return T
+	 */
+	public T getInstance() {
+		return instance != null ? instance : instanceList != null ? instanceList.get(0) : null;
 	}
 	
-	public BaseType(List<T> instanceList) {
-		this.instanceList = instanceList;
+	/**
+	 * Return a list of instances. If instanceList is null,
+	 * try to make a list from instance. If instance is null,
+	 * return null.
+	 * 
+	 * @return List<T>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<T> getInstanceList() {
+		return instanceList != null ? instanceList : instance != null ? Arrays.asList(instance) : null;
+	}
+	
+	public BaseType(T instance) {
+		this.instance = instance;
 	}
 	
 	protected void save(String jsonFile, T instance) throws IOException, ServicesException {
@@ -122,10 +142,10 @@ public abstract class BaseType<T> implements BaseTypeInt<T> {
 		return obj;
 	}
 	
-	protected <C> List<C> load(String jsonFile, Type type) throws ServicesException {
+	protected List<T> load(String jsonFile, Type type) throws ServicesException {
 		this.load(jsonFile);
 		
-		List<C> obj = JSONFormatter.fromJSON(fileString, type);
+		List<T> obj = JSONFormatter.fromJSON(fileString, type);
 		
 		fileString = null;
 		

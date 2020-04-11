@@ -5,30 +5,25 @@ import java.util.List;
 
 import com.cameronhetzler.paypal.exceptions.ServicesException;
 import com.google.gson.reflect.TypeToken;
-import com.paypal.api.payments.Invoice;
+import com.paypal.api.payments.PaymentDefinition;
 
-/**
- * 
- * @author Cameron Hetzler
- *
- */
-public class InvoiceType extends BaseType<Invoice> {
+public class PaymentDefinitionType extends BaseType<PaymentDefinition> {
 	
-	public InvoiceType() {
-		super(new Invoice());
+	public PaymentDefinitionType() {
+		super(new PaymentDefinition());
 	}
 
 	public Type getListType() {
 		// TODO Auto-generated method stub
-		return new TypeToken<List<Invoice>>(){}.getType();
+		return new TypeToken<List<PaymentDefinition>>(){}.getType();
 	}
 
-	public Class<Invoice> getType() {
+	public Class<PaymentDefinition> getType() {
 		// TODO Auto-generated method stub
-		return Invoice.class;
+		return PaymentDefinition.class;
 	}
 
-	public InvoiceType create(String jsonFile) throws ServicesException {
+	public PaymentDefinitionType create(String jsonFile) throws ServicesException {
 		// TODO Auto-generated method stub
 		try {
 			setInstanceList(load(jsonFile, getListType()));
@@ -37,4 +32,5 @@ public class InvoiceType extends BaseType<Invoice> {
 		}
 		return this;
 	}
+
 }

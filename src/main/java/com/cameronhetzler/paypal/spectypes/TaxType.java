@@ -19,22 +19,23 @@ public class TaxType extends BaseType<Tax> {
 		super(new Tax());
 	}
 
-	public Type getType() {
+	public Type getListType() {
 		// TODO Auto-generated method stub
 		return new TypeToken<List<Tax>>(){}.getType();
 	}
 
-	public Class <Tax> getSpecType() {
+	public Class <Tax> getType() {
 		// TODO Auto-generated method stub
 		return Tax.class;
 	}
 
-	public List<Tax> create(String jsonFile) throws ServicesException {
+	public TaxType create(String jsonFile) throws ServicesException {
 		// TODO Auto-generated method stub
 		try {
-			return load(jsonFile, getType());
+			setInstanceList(load(jsonFile, getListType()));
 		} catch (Exception e) {
-			return Arrays.asList( load(jsonFile, getSpecType()) );
+			setInstance(load(jsonFile, getType()));
 		}
+		return this;
 	}
 }

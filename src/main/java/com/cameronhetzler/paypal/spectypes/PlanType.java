@@ -19,22 +19,23 @@ public class PlanType extends BaseType<Plan> {
 		super(new Plan());
 	}
 
-	public Type getType() {
+	public Type getListType() {
 		// TODO Auto-generated method stub
 		return new TypeToken<List<Plan>>(){}.getType();
 	}
 	
-	public Class<Plan> getSpecType() {
+	public Class<Plan> getType() {
 		// TODO Auto-generated method stub
 		return Plan.class;
 	}
 
-	public List<Plan> create(String jsonFile) throws ServicesException {
+	public PlanType create(String jsonFile) throws ServicesException {
 		// TODO Auto-generated method stub
 		try {
-			return load(jsonFile, getType());
+			setInstanceList(load(jsonFile, getListType()));
 		} catch (Exception e) {
-			return Arrays.asList( load(jsonFile, getSpecType()) );
+			setInstance(load(jsonFile, getType()));
 		}
+		return this;
 	}
 }

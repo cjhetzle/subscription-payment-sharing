@@ -13,9 +13,9 @@ import lombok.Getter;
 public class PaymentMethod extends PayPalModel {
 
 	private String payerSelected;
-	
+
 	private String payeePreferred;
-	
+
 	private String category;
 
 	/**

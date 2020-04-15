@@ -13,11 +13,11 @@ import lombok.Getter;
 public class PricingScheme extends PayPalModel {
 
 	private Integer version;
-	
+
 	private Money fixedPrice;
-	
+
 	private String createTime;
-	
+
 	private String updateTime;
 
 	/**
@@ -51,5 +51,5 @@ public class PricingScheme extends PayPalModel {
 		this.updateTime = updateTime;
 		return this;
 	}
-	
+
 }

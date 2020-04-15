@@ -15,7 +15,8 @@ public class MerchantPreferencesType extends BaseType<MerchantPreferences> {
 
 	public Type getListType() {
 		// TODO Auto-generated method stub
-		return new TypeToken<List<MerchantPreferences>>() {}.getType();
+		return new TypeToken<List<MerchantPreferences>>() {
+		}.getType();
 	}
 
 	public Class<MerchantPreferences> getType() {

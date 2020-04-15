@@ -6,15 +6,15 @@ import lombok.Getter;
 
 @Getter
 public class BillingCycle extends PayPalModel {
-	
+
 	private PricingScheme pricingScheme;
-	
+
 	private Frequency frequency;
-	
+
 	private String tenureType;
-	
+
 	private Integer sequence;
-	
+
 	private Integer totalCycles;
 
 	/**
@@ -56,5 +56,5 @@ public class BillingCycle extends PayPalModel {
 		this.totalCycles = totalCycles;
 		return this;
 	}
-	
+
 }

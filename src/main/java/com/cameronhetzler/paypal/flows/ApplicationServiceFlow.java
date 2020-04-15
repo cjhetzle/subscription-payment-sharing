@@ -16,17 +16,17 @@ public abstract class ApplicationServiceFlow extends ApplicationFlow {
 	private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
 	protected String service;
-	
+
 	@Override
 	protected Result parseAndSetElements(Payload request) {
 		String methodName = "parseAndSetElements";
 		Long entryTime = entering(methodName);
 		Result result = new Result(getSimpleClassName() + "." + methodName);
-		
+
 		result.append(super.parseAndSetElements(request));
-		
+
 		Map<String, Object> table = request.getTable();
-		
+
 		if (!table.containsKey(Constants.SERVICE)) {
 			error("Missing Service in payload.");
 			result.setThrowable(new ServicesException("Missing Service in payload.", ErrorCodes.MISSING_PARAM, null));
@@ -35,12 +35,12 @@ public abstract class ApplicationServiceFlow extends ApplicationFlow {
 		}
 		this.service = (String) table.get(Constants.SERVICE);
 		info("Service set to: " + service, result);
-		
+
 		result.success();
 		exiting(methodName, entryTime, result);
 		return result;
 	}
-	
+
 	public Logger getLogger() {
 		// TODO Auto-generated method stub
 		return LOGGER;

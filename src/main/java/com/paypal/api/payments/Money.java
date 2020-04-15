@@ -13,7 +13,7 @@ import lombok.Getter;
 public class Money extends PayPalModel {
 
 	private String currencyCode;
-	
+
 	private String value;
 
 	/**
@@ -31,5 +31,5 @@ public class Money extends PayPalModel {
 		this.value = value;
 		return this;
 	}
-	
+
 }

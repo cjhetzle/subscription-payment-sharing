@@ -11,6 +11,8 @@ import com.cameronhetzler.paypal.flows.AddServiceItem;
 import com.cameronhetzler.paypal.flows.ApplicationFlow;
 import com.cameronhetzler.paypal.flows.CancelServiceInvoices;
 import com.cameronhetzler.paypal.flows.CancelSingleServiceInvoice;
+import com.cameronhetzler.paypal.flows.CreateServiceProductFromTemplates;
+import com.cameronhetzler.paypal.flows.CreateServiceSubscriptionPlanFromTemplates;
 import com.cameronhetzler.paypal.flows.SendServiceInvoices;
 import com.cameronhetzler.paypal.flows.SendServiceInvoicesFromTemplates;
 import com.cameronhetzler.paypal.flows.SendServiceSubscriptionsFromTemplates;
@@ -29,17 +31,17 @@ import com.cameronhetzler.paypal.common.Services;
 public class Index {
 
 	public static void main(String[] args) {
-		
+
 		if (args.length < 4) {
 			System.out.println("Please make sure to supply args. Exiting...");
 			System.exit(-1);
 		}
-		
+
 		Classifications classification = null;
 		String clientID = null;
 		String clientSecret = null;
 		String environment = null;
-		
+
 		try {
 			classification = Classifications.valueOf(args[0]);
 			clientID = args[1].strip();
@@ -49,34 +51,34 @@ public class Index {
 			System.out.println("Please make sure to supply valid args. Exiting...");
 			System.exit(-1);
 		}
-		
+
 		BasicConfigurator.configure();
-		
+
 		// Build a payload
 		Payload request = new Payload(classification);
 		Map<String, Object> table = new HashMap<String, Object>();
-		
+
 		BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
 		textEncryptor.setPassword("this-is-not-your-normal-password");
-		
+
 		table.put(Constants.CLASSIFICATION, classification);
 		table.put(Constants.CLIENT_ID, textEncryptor.encrypt(clientID));
 		table.put(Constants.CLIENT_SECRET, textEncryptor.encrypt(clientSecret));
 		table.put(Constants.ENVIRONMENT, environment);
 		table.put(Constants.SERVICE, Services.NETFLIX.toString());
-		
+
 		request.setTable(table);
-		
+
 		System.out.println(handleRequest(request).toString());
 	}
-	
+
 	public static Result handleRequest(Payload request) {
 		Result result = null;
-		
+
 		ApplicationFlow flow = null;
 		Classifications classification = null;
 		try {
-			classification = (Classifications) request.getTable().get(Constants.CLASSIFICATION);
+			classification = Classifications.valueOf((String) request.getTable().get(Constants.CLASSIFICATION));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -108,11 +110,17 @@ public class Index {
 		case SEND_SERVICE_SUBSCRIPTIONS_FROM_TEMPLATES:
 			flow = new SendServiceSubscriptionsFromTemplates();
 			break;
+		case CREATE_SERVICE_PRODUCT_FROM_TEMPLATES:
+			flow = new CreateServiceProductFromTemplates();
+			break;
+		case CREATE_SERVICE_SUBSCRIPTION_PLAN_FROM_TEMPLATES:
+			flow = new CreateServiceSubscriptionPlanFromTemplates();
+			break;
 		default:
-			
+
 		}
 		result = flow.configureAndBuildRequest(request);
-		
+
 		return result;
 	}
 

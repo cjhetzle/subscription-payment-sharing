@@ -13,7 +13,7 @@ import lombok.Getter;
 public class PayerName extends PayPalModel {
 
 	private String givenName;
-	
+
 	private String surname;
 
 	/**

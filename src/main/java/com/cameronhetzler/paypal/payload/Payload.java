@@ -13,20 +13,25 @@ import lombok.Setter;
  * @author Cameron Hetzler
  *
  */
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
-public class Payload implements PayloadInt  {
-	
+public class Payload implements PayloadInt {
+
 	private Classifications classification;
-	
+
 	private Map<String, Object> table;
-	
+
 	private JSONObject payloadJson;
-	
+
 	private String payloadString;
-	
+
 	public Payload(Classifications classification) {
 		this.classification = classification;
 	}
-	
+
+	public Payload(String classification) {
+		this.classification = Classifications.valueOf(classification);
+	}
+
 }

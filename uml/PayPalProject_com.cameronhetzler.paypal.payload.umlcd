@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.yattasolutions.uml.diagrams.classifier:ClassDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.yattasolutions.diagrams="http://ns.yatta-solutions.com/umllab/diagrams/1.1.0" xmlns:com.yattasolutions.uml.diagrams.classifier="http://ns.yatta-solutions.com/umllab/diagrams/classifier/1.1.0" xmi:id="_Q5YmEH63EeqXKpCIO2mCfA">
+  <modelElement href="PayPalProject.uml#_QFqDEH63EeqXKpCIO2mCfA"/>
+  <edges xsi:type="com.yattasolutions.diagrams:ConnectionVisual" xmi:id="_TP38UX63EeqXKpCIO2mCfA" targetItem="_TP4jYH63EeqXKpCIO2mCfA" sourceItem="_TP38UH63EeqXKpCIO2mCfA"/>
+  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_TP_REH63EeqXKpCIO2mCfA" source="_TP_4IH63EeqXKpCIO2mCfA">
+    <modelElement href="PayPalProject.uml#_Qjgct363EeqXKpCIO2mCfA"/>
+    <visualProperties xmi:id="_TQDigH63EeqXKpCIO2mCfA" position="110.0,110.0"/>
+    <stereotypes xmi:id="_TP_REX63EeqXKpCIO2mCfA" name="Reference">
+      <modelElement href="PayPalProject.uml#_QjhDwH63EeqXKpCIO2mCfA"/>
+    </stereotypes>
+    <nameVisual xmi:id="_TP_REn63EeqXKpCIO2mCfA" text=""/>
+    <sourceRole xmi:id="_TP_RE363EeqXKpCIO2mCfA" aggregationKind="NONE" name="">
+      <modelElement href="PayPalProject.uml#_QjgcuH63EeqXKpCIO2mCfA"/>
+      <visibility xmi:id="_TP_RFH63EeqXKpCIO2mCfA" label="+"/>
+      <cardinality xmi:id="_TP_RFX63EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+    </sourceRole>
+    <targetRole xmi:id="_TP_RFn63EeqXKpCIO2mCfA" aggregationKind="NONE" name="table" navigable="true">
+      <modelElement href="PayPalProject.uml#_QhmYMX63EeqXKpCIO2mCfA"/>
+      <visibility xmi:id="_TP_RF363EeqXKpCIO2mCfA" label="-"/>
+      <cardinality xmi:id="_TP_RGH63EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+      <qualifierHelper xmi:id="_TP_RGX63EeqXKpCIO2mCfA">
+        <qualifiers xmi:id="_TP_RGn63EeqXKpCIO2mCfA">
+          <modelElement href="PayPalProject.uml#_Qhm_QH63EeqXKpCIO2mCfA"/>
+          <visibility xmi:id="_TP_RG363EeqXKpCIO2mCfA" label="+"/>
+          <cardinality xmi:id="_TP_RHH63EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+          <type xmi:id="_TP_RHX63EeqXKpCIO2mCfA" name="String">
+            <modelElement href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </type>
+        </qualifiers>
+      </qualifierHelper>
+    </targetRole>
+  </edges>
+  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_TP_RHn63EeqXKpCIO2mCfA" source="_TP_4IH63EeqXKpCIO2mCfA">
+    <modelElement href="PayPalProject.uml#_QjhDwX63EeqXKpCIO2mCfA"/>
+    <visualProperties xmi:id="_TQDigX63EeqXKpCIO2mCfA" position="130.0,130.0"/>
+    <stereotypes xmi:id="_TP_RH363EeqXKpCIO2mCfA" name="Reference">
+      <modelElement href="PayPalProject.uml#_QjhDw363EeqXKpCIO2mCfA"/>
+    </stereotypes>
+    <nameVisual xmi:id="_TP_RIH63EeqXKpCIO2mCfA" text=""/>
+    <sourceRole xmi:id="_TP_RIX63EeqXKpCIO2mCfA" aggregationKind="NONE" name="">
+      <modelElement href="PayPalProject.uml#_QjhDwn63EeqXKpCIO2mCfA"/>
+      <visibility xmi:id="_TP_RIn63EeqXKpCIO2mCfA" label="+"/>
+      <cardinality xmi:id="_TP_RI363EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+    </sourceRole>
+    <targetRole xmi:id="_TP_RJH63EeqXKpCIO2mCfA" aggregationKind="NONE" name="payloadJson" navigable="true">
+      <modelElement href="PayPalProject.uml#_Qhm_QX63EeqXKpCIO2mCfA"/>
+      <visibility xmi:id="_TP_RJX63EeqXKpCIO2mCfA" label="-"/>
+      <cardinality xmi:id="_TP_RJn63EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+    </targetRole>
+  </edges>
+  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:GeneralizationVisual" xmi:id="_TQCUYH63EeqXKpCIO2mCfA" sourceAnchor="162.0,0.0" targetAnchor="37.0,44.0" dashed="true" superClass="_TQC7cH63EeqXKpCIO2mCfA" subClass="_TP_4IH63EeqXKpCIO2mCfA">
+    <modelElement href="PayPalProject.uml#_QfQ14X63EeqXKpCIO2mCfA"/>
+  </edges>
+  <nodes xsi:type="com.yattasolutions.diagrams:CommentVisual" xmi:id="_TP38UH63EeqXKpCIO2mCfA" sourceConnectionVisual="_TP38UX63EeqXKpCIO2mCfA" text="&#xD;&#xA;@author Cameron Hetzler&#xD;&#xA; *" item="_TP4jYH63EeqXKpCIO2mCfA">
+    <modelElement href="PayPalProject.uml#_Qi5Ys363EeqXKpCIO2mCfA"/>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:EnumerationVisual" xmi:id="_TP4jYH63EeqXKpCIO2mCfA" comments="_TP38UH63EeqXKpCIO2mCfA" targetConnectionVisual="_TP38UX63EeqXKpCIO2mCfA" name="Classifications">
+    <modelElement href="PayPalProject.uml#_QK7koH63EeqXKpCIO2mCfA"/>
+    <visualProperties xmi:id="_TP4jYX63EeqXKpCIO2mCfA" position="50.0,50.0" size="-1.0,-1.0"/>
+    <stereotypes xmi:id="_TP4jYn63EeqXKpCIO2mCfA" name="LegacyStyledElement">
+      <modelElement href="PayPalProject.uml#_QK8LsH63EeqXKpCIO2mCfA"/>
+    </stereotypes>
+    <stereotypes xmi:id="_TP4jY363EeqXKpCIO2mCfA" name="Annotations">
+      <modelElement href="PayPalProject.uml#_QK_PAX63EeqXKpCIO2mCfA"/>
+    </stereotypes>
+    <visibility xmi:id="_TP4jZH63EeqXKpCIO2mCfA" label="+"/>
+    <attributes xmi:id="_TP4jZX63EeqXKpCIO2mCfA" name="classification">
+      <modelElement href="PayPalProject.uml#_QhlxIH63EeqXKpCIO2mCfA"/>
+      <visibility xmi:id="_TP4jZn63EeqXKpCIO2mCfA" label="-"/>
+      <cardinality xmi:id="_TP4jZ363EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+      <type xmi:id="_TP4jaH63EeqXKpCIO2mCfA" name="String">
+        <modelElement href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </type>
+    </attributes>
+    <operations xmi:id="_TP4jaX63EeqXKpCIO2mCfA" name="Classifications">
+      <modelElement href="PayPalProject.uml#_QK-n8H63EeqXKpCIO2mCfA"/>
+      <keywords xmi:id="_TP4jan63EeqXKpCIO2mCfA" keyword="create"/>
+      <stereotypes xmi:id="_TP4ja363EeqXKpCIO2mCfA" name="StyledElement">
+        <modelElement href="PayPalProject.uml#_QK_PAH63EeqXKpCIO2mCfA"/>
+      </stereotypes>
+      <visibility xmi:id="_TP4jbH63EeqXKpCIO2mCfA" label="-"/>
+      <cardinality xmi:id="_TP4jbX63EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+      <outParameters xmi:id="_TP4jbn63EeqXKpCIO2mCfA">
+        <modelElement href="PayPalProject.uml#_QK-n9H63EeqXKpCIO2mCfA"/>
+        <type xmi:id="_TP4jb363EeqXKpCIO2mCfA" name="Classifications">
+          <modelElement href="PayPalProject.uml#_QK7koH63EeqXKpCIO2mCfA"/>
+        </type>
+      </outParameters>
+      <parameters xmi:id="_TP4jcH63EeqXKpCIO2mCfA" name="classification">
+        <modelElement href="PayPalProject.uml#_QK-n8X63EeqXKpCIO2mCfA"/>
+        <cardinality xmi:id="_TP4jcX63EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+        <type xmi:id="_TP4jcn63EeqXKpCIO2mCfA" name="String">
+          <modelElement href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </type>
+      </parameters>
+    </operations>
+    <literals xmi:id="_TP4jc363EeqXKpCIO2mCfA" name="EXAMPLE">
+      <modelElement href="PayPalProject.uml#_QK8LsX63EeqXKpCIO2mCfA"/>
+    </literals>
+    <literals xmi:id="_TP4jdH63EeqXKpCIO2mCfA" name="ADD_BILLINGINFO">
+      <modelElement href="PayPalProject.uml#_QK8Ls363EeqXKpCIO2mCfA"/>
+    </literals>
+    <literals xmi:id="_TP4jdX63EeqXKpCIO2mCfA" name="ADD_SUPPORTED_SERVICE">
+      <modelElement href="PayPalProject.uml#_QK8LtX63EeqXKpCIO2mCfA"/>
+    </literals>
+    <literals xmi:id="_TP4jdn63EeqXKpCIO2mCfA" name="ADD_SERVICE_ITEM">
+      <modelElement href="PayPalProject.uml#_QK8ywX63EeqXKpCIO2mCfA"/>
+    </literals>
+    <literals xmi:id="_TP4jd363EeqXKpCIO2mCfA" name="SEND_SERVICE_INVOICES">
+      <modelElement href="PayPalProject.uml#_QK8yw363EeqXKpCIO2mCfA"/>
+    </literals>
+    <literals xmi:id="_TP4jeH63EeqXKpCIO2mCfA" name="CANCEL_SERVICE_INVOICES">
+      <modelElement href="PayPalProject.uml#_QK8yxX63EeqXKpCIO2mCfA"/>
+    </literals>
+    <literals xmi:id="_TP4jeX63EeqXKpCIO2mCfA" name="CANCEL_SINGLE_SERVICE_INVOICE">
+      <modelElement href="PayPalProject.uml#_QK8yx363EeqXKpCIO2mCfA"/>
+    </literals>
+    <literals xmi:id="_TP4jen63EeqXKpCIO2mCfA" name="SEND_SINGLE_SERVICE_INVOICE">
+      <modelElement href="PayPalProject.uml#_QK8yyX63EeqXKpCIO2mCfA"/>
+    </literals>
+    <literals xmi:id="_TP4je363EeqXKpCIO2mCfA" name="SEND_SERVICE_INVOICES_FROM_TEMPLATES">
+      <modelElement href="PayPalProject.uml#_QK9Z0H63EeqXKpCIO2mCfA"/>
+    </literals>
+    <literals xmi:id="_TP4jfH63EeqXKpCIO2mCfA" name="SEND_SERVICE_SUBSCRIPTIONS_FROM_TEMPLATES">
+      <modelElement href="PayPalProject.uml#_QK9Z0n63EeqXKpCIO2mCfA"/>
+    </literals>
+    <literals xmi:id="_TP4jfX63EeqXKpCIO2mCfA" name="CREATE_SERVICE_PRODUCT_FROM_TEMPLATES">
+      <modelElement href="PayPalProject.uml#_QK9Z1H63EeqXKpCIO2mCfA"/>
+    </literals>
+    <literals xmi:id="_TP4jfn63EeqXKpCIO2mCfA" name="CREATE_SERVICE_SUBSCRIPTION_PLAN_FROM_TEMPLATES">
+      <modelElement href="PayPalProject.uml#_QK9Z1n63EeqXKpCIO2mCfA"/>
+    </literals>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_TP_4IH63EeqXKpCIO2mCfA" name="Payload" associationsOut="_TP_REH63EeqXKpCIO2mCfA _TP_RHn63EeqXKpCIO2mCfA" generalizations="_TQCUYH63EeqXKpCIO2mCfA">
+    <modelElement href="PayPalProject.uml#_QK_2EH63EeqXKpCIO2mCfA"/>
+    <visualProperties xmi:id="_TP_4IX63EeqXKpCIO2mCfA" position="491.0,120.0" size="-1.0,-1.0"/>
+    <stereotypes xmi:id="_TP_4In63EeqXKpCIO2mCfA" name="LegacyStyledElement">
+      <modelElement href="PayPalProject.uml#_QLAdIH63EeqXKpCIO2mCfA"/>
+    </stereotypes>
+    <stereotypes xmi:id="_TP_4I363EeqXKpCIO2mCfA" name="Annotations">
+      <modelElement href="PayPalProject.uml#_QLBrQH63EeqXKpCIO2mCfA"/>
+    </stereotypes>
+    <visibility xmi:id="_TP_4JH63EeqXKpCIO2mCfA" label="+"/>
+    <attributes xmi:id="_TP_4JX63EeqXKpCIO2mCfA" name="classification">
+      <modelElement href="PayPalProject.uml#_QhmYMH63EeqXKpCIO2mCfA"/>
+      <visibility xmi:id="_TP_4Jn63EeqXKpCIO2mCfA" label="-"/>
+      <cardinality xmi:id="_TP_4J363EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+      <type xmi:id="_TP_4KH63EeqXKpCIO2mCfA" name="Classifications">
+        <modelElement href="PayPalProject.uml#_QK7koH63EeqXKpCIO2mCfA"/>
+      </type>
+    </attributes>
+    <attributes xmi:id="_TP_4KX63EeqXKpCIO2mCfA" name="table">
+      <modelElement href="PayPalProject.uml#_QhmYMX63EeqXKpCIO2mCfA"/>
+      <visibility xmi:id="_TP_4Kn63EeqXKpCIO2mCfA" label="-"/>
+      <cardinality xmi:id="_TP_4K363EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+      <type xmi:id="_TP_4LH63EeqXKpCIO2mCfA" name="Object">
+        <modelElement href="PayPalProject.uml#_Qgb6kH63EeqXKpCIO2mCfA"/>
+      </type>
+    </attributes>
+    <attributes xmi:id="_TP_4LX63EeqXKpCIO2mCfA" name="payloadJson">
+      <modelElement href="PayPalProject.uml#_Qhm_QX63EeqXKpCIO2mCfA"/>
+      <visibility xmi:id="_TP_4Ln63EeqXKpCIO2mCfA" label="-"/>
+      <cardinality xmi:id="_TP_4L363EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+      <type xmi:id="_TP_4MH63EeqXKpCIO2mCfA" name="JSONObject">
+        <modelElement href="PayPalProject.uml#_QfPnwH63EeqXKpCIO2mCfA"/>
+      </type>
+    </attributes>
+    <attributes xmi:id="_TP_4MX63EeqXKpCIO2mCfA" name="payloadString">
+      <modelElement href="PayPalProject.uml#_Qhm_Qn63EeqXKpCIO2mCfA"/>
+      <visibility xmi:id="_TP_4Mn63EeqXKpCIO2mCfA" label="-"/>
+      <cardinality xmi:id="_TP_4M363EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+      <type xmi:id="_TP_4NH63EeqXKpCIO2mCfA" name="String">
+        <modelElement href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </type>
+    </attributes>
+    <operations xmi:id="_TP_4NX63EeqXKpCIO2mCfA" name="Payload">
+      <modelElement href="PayPalProject.uml#_QLBEMH63EeqXKpCIO2mCfA"/>
+      <keywords xmi:id="_TP_4Nn63EeqXKpCIO2mCfA" keyword="create"/>
+      <stereotypes xmi:id="_TP_4N363EeqXKpCIO2mCfA" name="StyledElement">
+        <modelElement href="PayPalProject.uml#_QLBENX63EeqXKpCIO2mCfA"/>
+      </stereotypes>
+      <visibility xmi:id="_TP_4OH63EeqXKpCIO2mCfA" label="+"/>
+      <cardinality xmi:id="_TP_4OX63EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+      <outParameters xmi:id="_TP_4On63EeqXKpCIO2mCfA">
+        <modelElement href="PayPalProject.uml#_QLBENH63EeqXKpCIO2mCfA"/>
+        <type xmi:id="_TP_4O363EeqXKpCIO2mCfA" name="Payload">
+          <modelElement href="PayPalProject.uml#_QK_2EH63EeqXKpCIO2mCfA"/>
+        </type>
+      </outParameters>
+      <parameters xmi:id="_TP_4PH63EeqXKpCIO2mCfA" name="classification">
+        <modelElement href="PayPalProject.uml#_QLBEMX63EeqXKpCIO2mCfA"/>
+        <cardinality xmi:id="_TP_4PX63EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+        <type xmi:id="_TP_4Pn63EeqXKpCIO2mCfA" name="String">
+          <modelElement href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </type>
+      </parameters>
+    </operations>
+    <operations xmi:id="_TP_4P363EeqXKpCIO2mCfA" name="Payload">
+      <modelElement href="PayPalProject.uml#_QfQ14n63EeqXKpCIO2mCfA"/>
+      <keywords xmi:id="_TP_4QH63EeqXKpCIO2mCfA" keyword="create"/>
+      <stereotypes xmi:id="_TP_4QX63EeqXKpCIO2mCfA" name="StyledElement">
+        <modelElement href="PayPalProject.uml#_QfRc9H63EeqXKpCIO2mCfA"/>
+      </stereotypes>
+      <visibility xmi:id="_TP_4Qn63EeqXKpCIO2mCfA" label="+"/>
+      <cardinality xmi:id="_TP_4Q363EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+      <outParameters xmi:id="_TP_4RH63EeqXKpCIO2mCfA">
+        <modelElement href="PayPalProject.uml#_QfRc8363EeqXKpCIO2mCfA"/>
+        <type xmi:id="_TP_4RX63EeqXKpCIO2mCfA" name="Payload">
+          <modelElement href="PayPalProject.uml#_QK_2EH63EeqXKpCIO2mCfA"/>
+        </type>
+      </outParameters>
+      <parameters xmi:id="_TP_4Rn63EeqXKpCIO2mCfA" name="classification">
+        <modelElement href="PayPalProject.uml#_QfRc8H63EeqXKpCIO2mCfA"/>
+        <cardinality xmi:id="_TP_4R363EeqXKpCIO2mCfA" label="1" max="1" min="1"/>
+        <type xmi:id="_TP_4SH63EeqXKpCIO2mCfA" name="Classifications">
+          <modelElement href="PayPalProject.uml#_QK7koH63EeqXKpCIO2mCfA"/>
+        </type>
+      </parameters>
+    </operations>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:InterfaceVisual" xmi:id="_TQC7cH63EeqXKpCIO2mCfA" name="PayloadInt" subclassedBy="_TQCUYH63EeqXKpCIO2mCfA">
+    <modelElement href="PayPalProject.uml#_QLCSUH63EeqXKpCIO2mCfA"/>
+    <visualProperties xmi:id="_TQC7cX63EeqXKpCIO2mCfA" position="616.0,21.0" size="-1.0,-1.0"/>
+    <visibility xmi:id="_TQC7cn63EeqXKpCIO2mCfA" label="+"/>
+  </nodes>
+</com.yattasolutions.uml.diagrams.classifier:ClassDiagram>

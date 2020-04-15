@@ -8,7 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 @SuppressWarnings("serial")
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
 @ToString
@@ -16,9 +17,9 @@ public class ServicesException extends Exception {
 
 	@NonNull
 	private String message;
-	
+
 	private ErrorCodes errorCode;
-	
+
 	private Throwable error;
-	
+
 }

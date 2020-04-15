@@ -26,18 +26,15 @@ public class JSONFormatter {
 	/**
 	 * Gson
 	 */
-	public static Gson GSON = new GsonBuilder().setPrettyPrinting()
-			.setFieldNamingPolicy(FIELD_NAMING_POLICY).create();
+	public static Gson GSON = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FIELD_NAMING_POLICY).create();
 
 	/**
 	 * Set a format for gson FIELD_NAMING_POLICY. See {@link FieldNamingPolicy}
 	 * 
 	 * @param FIELD_NAMING_POLICY
 	 */
-	public static final void setFIELD_NAMING_POLICY(
-			FieldNamingPolicy FIELD_NAMING_POLICY) {
-		GSON = new GsonBuilder().setPrettyPrinting()
-				.setFieldNamingPolicy(FIELD_NAMING_POLICY).create();
+	public static final void setFIELD_NAMING_POLICY(FieldNamingPolicy FIELD_NAMING_POLICY) {
+		GSON = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FIELD_NAMING_POLICY).create();
 	}
 
 	/**
@@ -52,7 +49,7 @@ public class JSONFormatter {
 	public static <T> String toJSON(T t) {
 		return GSON.toJson(t);
 	}
-	
+
 	public static <T> String toJSON(T t, Type type) {
 		return GSON.toJson(t, type);
 	}
@@ -77,7 +74,7 @@ public class JSONFormatter {
 		}
 		return t;
 	}
-	
+
 	/**
 	 * Converts a JSON String to object representation
 	 * 

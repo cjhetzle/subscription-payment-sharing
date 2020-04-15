@@ -13,17 +13,17 @@ import lombok.Getter;
 public class ApplicationContext extends PayPalModel {
 
 	private String brandName;
-	
+
 	private String locale;
-	
+
 	private String shippingPreference;
-	
+
 	private String userAction;
-	
+
 	private PaymentMethod paymentMethod;
-	
+
 	private String returnUrl;
-	
+
 	private String cancelUrl;
 
 	/**

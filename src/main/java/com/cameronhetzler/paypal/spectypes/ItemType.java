@@ -19,7 +19,8 @@ public class ItemType extends BaseType<Item> {
 
 	public Type getListType() {
 		// TODO Auto-generated method stub
-		return new TypeToken<List<Item>>(){}.getType();
+		return new TypeToken<List<Item>>() {
+		}.getType();
 	}
 
 	public Class<Item> getType() {

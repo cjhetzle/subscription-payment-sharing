@@ -14,7 +14,8 @@ public class SubscriptionPlanType extends BaseType<SubscriptionPlan> {
 
 	public Type getListType() {
 		// TODO Auto-generated method stub
-		return new TypeToken<List<SubscriptionPlan>>() {}.getType();
+		return new TypeToken<List<SubscriptionPlan>>() {
+		}.getType();
 	}
 
 	public Class<SubscriptionPlan> getType() {

@@ -7,14 +7,15 @@ import com.google.gson.reflect.TypeToken;
 import com.paypal.api.payments.PaymentDefinition;
 
 public class PaymentDefinitionType extends BaseType<PaymentDefinition> {
-	
+
 	public PaymentDefinitionType() {
 		super(new PaymentDefinition());
 	}
 
 	public Type getListType() {
 		// TODO Auto-generated method stub
-		return new TypeToken<List<PaymentDefinition>>(){}.getType();
+		return new TypeToken<List<PaymentDefinition>>() {
+		}.getType();
 	}
 
 	public Class<PaymentDefinition> getType() {

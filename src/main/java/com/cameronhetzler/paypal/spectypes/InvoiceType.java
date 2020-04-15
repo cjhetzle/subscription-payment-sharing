@@ -12,14 +12,15 @@ import com.paypal.api.payments.Invoice;
  *
  */
 public class InvoiceType extends BaseType<Invoice> {
-	
+
 	public InvoiceType() {
 		super(new Invoice());
 	}
 
 	public Type getListType() {
 		// TODO Auto-generated method stub
-		return new TypeToken<List<Invoice>>(){}.getType();
+		return new TypeToken<List<Invoice>>() {
+		}.getType();
 	}
 
 	public Class<Invoice> getType() {

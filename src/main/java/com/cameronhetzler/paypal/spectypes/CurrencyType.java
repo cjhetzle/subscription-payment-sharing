@@ -12,14 +12,15 @@ import com.paypal.api.payments.Currency;
  *
  */
 public class CurrencyType extends BaseType<Currency> {
-	
+
 	public CurrencyType() {
 		super(new Currency());
 	}
 
 	public Type getListType() {
 		// TODO Auto-generated method stub
-		return new TypeToken<List<Currency>>(){}.getType();
+		return new TypeToken<List<Currency>>() {
+		}.getType();
 	}
 
 	public Class<Currency> getType() {

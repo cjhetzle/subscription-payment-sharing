@@ -12,17 +12,18 @@ import com.paypal.api.payments.Tax;
  *
  */
 public class TaxType extends BaseType<Tax> {
-	
+
 	public TaxType() {
 		super(new Tax());
 	}
 
 	public Type getListType() {
 		// TODO Auto-generated method stub
-		return new TypeToken<List<Tax>>(){}.getType();
+		return new TypeToken<List<Tax>>() {
+		}.getType();
 	}
 
-	public Class <Tax> getType() {
+	public Class<Tax> getType() {
 		// TODO Auto-generated method stub
 		return Tax.class;
 	}

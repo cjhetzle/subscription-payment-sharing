@@ -11,17 +11,18 @@ import com.paypal.api.payments.BillingInfo;
  * @author Cameron Hetzler
  *
  */
-public class BillingInfoType extends BaseType<BillingInfo>{
-	
+public class BillingInfoType extends BaseType<BillingInfo> {
+
 	public BillingInfoType() {
 		super(new BillingInfo());
 	}
 
 	public Type getListType() {
 		// TODO Auto-generated method stub
-		return new TypeToken<List<BillingInfo>>(){}.getType();
+		return new TypeToken<List<BillingInfo>>() {
+		}.getType();
 	}
-	
+
 	public Class<BillingInfo> getType() {
 		// TODO Auto-generated method stub
 		return BillingInfo.class;

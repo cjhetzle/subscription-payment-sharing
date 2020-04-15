@@ -14,7 +14,8 @@ public class ChargeModelsType extends BaseType<ChargeModels> {
 
 	public Type getListType() {
 		// TODO Auto-generated method stub
-		return new TypeToken<List<ChargeModels>>(){}.getType();
+		return new TypeToken<List<ChargeModels>>() {
+		}.getType();
 	}
 
 	public Class<ChargeModels> getType() {

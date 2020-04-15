@@ -11,15 +11,15 @@ import lombok.Getter;
 public class AddressDetails {
 
 	private String streetNumber;
-	
+
 	private String streetName;
-	
+
 	private String streetType;
-	
+
 	private String deliveryService;
-	
+
 	private String buildingName;
-	
+
 	private String subBuilding;
 
 	/**

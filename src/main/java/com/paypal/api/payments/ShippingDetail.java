@@ -13,7 +13,7 @@ import lombok.Getter;
 public class ShippingDetail extends PayPalModel {
 
 	private ShippingDetailName name;
-	
+
 	private AddressPortable address;
 
 	/**

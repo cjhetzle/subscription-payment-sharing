@@ -13,13 +13,13 @@ import lombok.Getter;
 public class SubscriberRequest extends PayPalModel {
 
 	private PayerName name;
-	
+
 	private String emailAddress;
-	
+
 	private String payerId;
-	
+
 	private ShippingDetail shippingAddress;
-	
+
 	private PaymentSource paymentSource;
 
 	/**

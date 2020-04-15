@@ -11,13 +11,13 @@ import lombok.Getter;
 public class PaymentPreferences {
 
 	private Boolean autoBillOutstanding;
-	
+
 	private Money setupFee;
-	
+
 	private String setupFeeFailureAction;
-	
+
 	private Integer paymentFailureThreshold;
-	
+
 	/**
 	 * @param autoBillOutstanding the autoBillOutstanding to set
 	 */

@@ -13,13 +13,13 @@ import lombok.Getter;
 public class Card extends PayPalModel {
 
 	private String name;
-	
+
 	private String number;
-	
+
 	private String expiry;
-	
+
 	private String securityCode;
-	
+
 	private AddressPortable billingAddress;
 
 	/**

@@ -10,18 +10,15 @@ package com.cameronhetzler.paypal.common;
  */
 public enum Services {
 
-	NETFLIX("netflix"),
-	SPOTIFY("spotify"),
-	NINTENDO_ONLINE("nintendo_online"),
-	CRUNCHYROLL("crunchyroll");
-	
+	NETFLIX("netflix"), SPOTIFY("spotify"), NINTENDO_ONLINE("nintendo_online"), CRUNCHYROLL("crunchyroll");
+
 	private String value;
-	
+
 	private Services(String value) {
 		this.value = value;
 		Constants.SupportedServices.add(this);
 	}
-	
+
 	public String toString() {
 		return value.toLowerCase();
 	}

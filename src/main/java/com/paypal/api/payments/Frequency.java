@@ -13,8 +13,8 @@ import lombok.Getter;
 public class Frequency extends PayPalModel {
 
 	private String intervalUnit;
-	
-	private String intervalCount;
+
+	private Integer intervalCount;
 
 	/**
 	 * @param intervalUnit the intervalUnit to set
@@ -27,7 +27,7 @@ public class Frequency extends PayPalModel {
 	/**
 	 * @param intervalCount the intervalCount to set
 	 */
-	public Frequency setIntervalCount(String intervalCount) {
+	public Frequency setIntervalCount(Integer intervalCount) {
 		this.intervalCount = intervalCount;
 		return this;
 	}

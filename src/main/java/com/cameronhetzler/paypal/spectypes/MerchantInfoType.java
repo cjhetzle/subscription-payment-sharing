@@ -12,14 +12,15 @@ import com.paypal.api.payments.MerchantInfo;
  *
  */
 public class MerchantInfoType extends BaseType<MerchantInfo> {
-	
+
 	public MerchantInfoType() {
 		super(new MerchantInfo());
 	}
-	
+
 	public Type getListType() {
 		// TODO Auto-generated method stub
-		return new TypeToken<List<MerchantInfo>>(){}.getType();
+		return new TypeToken<List<MerchantInfo>>() {
+		}.getType();
 	}
 
 	public Class<MerchantInfo> getType() {

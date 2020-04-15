@@ -9,7 +9,7 @@ import com.cameronhetzler.paypal.result.Result;
  *
  */
 interface ApplicationFlowInt {
-	
+
 	/**
 	 * Configure a possible payload that is sent in.
 	 * Build a request, given the source class that was called,
@@ -17,14 +17,14 @@ interface ApplicationFlowInt {
 	 * @return Result object with information on what happened
 	 */
 	public Result configureAndBuildRequest(Payload request);
-	
+
 	/**
 	 * 
 	 * @param methodName
 	 * @param object
 	 * @return
 	 */
-	public Long entering(String methodName, Object...object);
+	public Long entering(String methodName, Object... object);
 
 	/**
 	 * 
@@ -32,6 +32,6 @@ interface ApplicationFlowInt {
 	 * @param entryTime
 	 * @param objects
 	 */
-	public void exiting(String methodName, Long entryTime, Object...objects);
-	
+	public void exiting(String methodName, Long entryTime, Object... objects);
+
 }

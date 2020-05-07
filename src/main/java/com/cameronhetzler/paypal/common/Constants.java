@@ -36,6 +36,12 @@ public class Constants {
 	public static final String TAX_FOLDER = "/taxes";
 	public static final String BILLINGINFO_FOLDER = "/billinginfos";
 	public static final String ITEM_FOLDER = "/items";
+	
+	// Properties
+	public static final String HOSTNAME = "hostname";
+	public static final String PORT = "port";
+	public static final String DB_NAME = "dbname";
+	public static final String USERID = "user";
 
 	public static final List<PayPalSpecs> PayPalSpecs = new LinkedList<PayPalSpecs>();
 	public static final List<Services> SupportedServices = new LinkedList<Services>();

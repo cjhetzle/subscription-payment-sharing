@@ -2,6 +2,7 @@
 *.class
 *.classpath
 *.json
+*.project
 # Log file
 *.log
 

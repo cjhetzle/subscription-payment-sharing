@@ -10,6 +10,7 @@ import com.cameronhetzler.paypal.exceptions.ServicesException;
 import com.cameronhetzler.paypal.payload.Payload;
 import com.cameronhetzler.paypal.result.Result;
 import com.cameronhetzler.paypal.result.ResultCodes;
+import com.cameronhetzler.paypal.services.NetworkService;
 import com.cameronhetzler.paypal.common.Constants;
 import com.cameronhetzler.paypal.common.LoggingLayer;
 import com.paypal.base.rest.APIContext;
@@ -21,7 +22,7 @@ import lombok.Getter;
  * @author Cameron Hetzler
  *
  */
-public abstract class ApplicationFlow extends LoggingLayer implements ApplicationFlowInt {
+public abstract class ApplicationFlow extends NetworkService implements ApplicationFlowInt {
 
 	private static final String CLASSNAME = ApplicationFlow.class.getName();
 	private static final String CLASSNAME_SIMPLE = ApplicationFlow.class.getSimpleName();

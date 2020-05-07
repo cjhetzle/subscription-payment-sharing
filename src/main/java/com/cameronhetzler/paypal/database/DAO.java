@@ -36,15 +36,15 @@ public class DAO {
 		LOGGER.addAppender(externalAppender);
 	}
 	
-	static Connection getConnection() {
+	public static Connection getConnection() {
 		return getConnection("jdbc:mysql://192.168.1.2:3306");
 	}
 	
-	static Connection getConnection(String url) {
+	public static Connection getConnection(String url) {
 		return getConnection(url, "testdb", "dbuser", "");
 	}
 	
-	static Connection getConnection(Properties info) {
+	public static Connection getConnection(Properties info) {
 
 		String url = "jdbc:mysql://" + info.getProperty(Constants.HOSTNAME) + ":" + info.getProperty(Constants.PORT);
 		String dbname = info.getProperty(Constants.DB_NAME);
@@ -53,7 +53,7 @@ public class DAO {
 		return getConnection(url, dbname, user, "");
 	}
 	
-	static Connection getConnection(String url, String dbname, String user, String password) {
+	public static Connection getConnection(String url, String dbname, String user, String password) {
 		
 		Connection conn = null;
 		

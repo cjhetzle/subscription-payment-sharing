@@ -7,7 +7,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.jasypt.util.text.BasicTextEncryptor;
 
 import com.cameronhetzler.paypal.flows.AddBillingInfo;
-import com.cameronhetzler.paypal.flows.AddServiceItem;
+import com.cameronhetzler.paypal.flows.CreateSupportedService;
 import com.cameronhetzler.paypal.flows.ApplicationFlow;
 import com.cameronhetzler.paypal.flows.CancelServiceInvoices;
 import com.cameronhetzler.paypal.flows.CancelSingleServiceInvoice;
@@ -37,13 +37,13 @@ public class Index {
 			System.exit(-1);
 		}
 
-		Classifications classification = null;
+		String classification = null;
 		String clientID = null;
 		String clientSecret = null;
 		String environment = null;
 
 		try {
-			classification = Classifications.valueOf(args[0]);
+			classification = args[0].strip();
 			clientID = args[1].strip();
 			clientSecret = args[2].strip();
 			environment = args[3].strip();
@@ -78,7 +78,9 @@ public class Index {
 		ApplicationFlow flow = null;
 		Classifications classification = null;
 		try {
-			classification = Classifications.valueOf((String) request.getTable().get(Constants.CLASSIFICATION));
+			Object obj = request.getTable().get(Constants.CLASSIFICATION);
+			String str = (String) obj;
+			classification = Classifications.valueOf(str);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -90,7 +92,7 @@ public class Index {
 			flow = new AddBillingInfo();
 			break;
 		case ADD_SERVICE_ITEM:
-			flow = new AddServiceItem();
+			flow = new CreateSupportedService();
 			break;
 		case SEND_SERVICE_INVOICES:
 			flow = new SendServiceInvoices();
@@ -115,6 +117,9 @@ public class Index {
 			break;
 		case CREATE_SERVICE_SUBSCRIPTION_PLAN_FROM_TEMPLATES:
 			flow = new CreateServiceSubscriptionPlanFromTemplates();
+			break;
+		case CREATE_SUPPORTED_SERVICE:
+			flow = new CreateSupportedService();
 			break;
 		default:
 

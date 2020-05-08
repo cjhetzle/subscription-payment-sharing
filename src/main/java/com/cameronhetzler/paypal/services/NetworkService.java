@@ -1,6 +1,7 @@
 package com.cameronhetzler.paypal.services;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -41,6 +42,36 @@ public class NetworkService extends LoggingLayer {
 		} catch (Exception e) {
 			connection = null;
 			throw new NetworkException("Could not set auto commit to false", NetworkCodes.AUTO_COMMIT);
+		}
+	}
+	
+	public void commit() throws NetworkException {
+		
+		if (connection == null) {
+			// throw something
+		}
+		
+		try {
+			if (connection.isClosed()) {
+				connection = null;
+				// throw something
+			}
+		} catch (SQLException e) {
+			connection = null;
+			// throw something
+		}
+		
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			// throw something
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// log
+			}
+			connection = null;
 		}
 	}
 

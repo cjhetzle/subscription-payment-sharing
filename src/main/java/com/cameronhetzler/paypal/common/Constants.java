@@ -45,6 +45,7 @@ public class Constants {
 	public static final String PORT = "port";
 	public static final String DB_NAME = "dbname";
 	public static final String USERID = "user";
+	public static final String PWORD = "pword";
 
 	public static final List<PayPalSpecs> PayPalSpecs = new LinkedList<PayPalSpecs>();
 	public static final List<Services> SupportedServices = new LinkedList<Services>();

@@ -49,8 +49,9 @@ public class DAO {
 		String url = "jdbc:mysql://" + info.getProperty(Constants.HOSTNAME) + ":" + info.getProperty(Constants.PORT);
 		String dbname = info.getProperty(Constants.DB_NAME);
 		String user = info.getProperty(Constants.USERID);
+		String pword = info.getProperty(Constants.PWORD);
 		
-		return getConnection(url, dbname, user, "");
+		return getConnection(url, dbname, user, pword);
 	}
 	
 	public static Connection getConnection(String url, String dbname, String user, String password) {
@@ -59,7 +60,7 @@ public class DAO {
 		
 		try {
 			LOGGER.info("*** Connecting to " + url + "/" + dbname + " with user: " + user + " ***");
-			conn = DriverManager.getConnection(url + "/" + dbname, user, "");
+			conn = DriverManager.getConnection(url + "/" + dbname, user, password);
 			
 			if (conn == null) {
 				throw new Exception();
@@ -82,16 +83,27 @@ public class DAO {
 	 */
 	public static Map<Integer, Map<String, Object>> executeUpdate(Properties dbProperties, String query,
 			ArrayList<Object> updateParams, String[] generatedKeys) {
+		return executeUpdate(getConnection(dbProperties), query, updateParams, generatedKeys);
+	}
+	
+	/**
+	 * 
+	 * @param dbProperties
+	 * @param query
+	 * @param updateParams
+	 * @param generatedKeys
+	 * @return
+	 */
+	public static Map<Integer, Map<String, Object>> executeUpdate(Connection connection, String query,
+			ArrayList<Object> updateParams, String[] generatedKeys) {
 		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		Connection connection = null;
 		Map<Integer, Map<String, Object>> resultTable = null;
 		
 		try {
 			
 			LOGGER.info("Attempting to obtain connection...");
-			connection = getConnection(dbProperties);
 			
 			if (connection != null) {
 				LOGGER.info("Obtained connection.");
@@ -217,26 +229,29 @@ public class DAO {
 	public static ArrayList<HashMap<String, Object>> executeSelectQuery(Properties dbProperties, String query,
 			ArrayList<Object> updateParams) {
 		
+		return executeSelectQuery(getConnection(dbProperties), query, updateParams);
+	}
+	
+	/**
+	 * 
+	 * @param dbProperties
+	 * @param query
+	 * @param updateParams
+	 * @return
+	 */
+	public static ArrayList<HashMap<String, Object>> executeSelectQuery(Connection connection, String query,
+			ArrayList<Object> updateParams) {
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		Connection connection = null;
+
 		ArrayList<HashMap<String, Object>> resultRecords = new ArrayList<HashMap<String, Object>>();
 		try {
-			
-			LOGGER.info("Attempting to obtain connection...");
-			connection = getConnection(dbProperties);
 			
 			if (connection != null) {
 				
 				LOGGER.info("Obtained connection.");
 				preparedStatement = connection.prepareStatement(query);
-				
-				LOGGER.info("SQL to update -> " + query);
-				String params = null;
-				for (Object listParam : updateParams) {
-					params += listParam + ",";
-				}
-				LOGGER.info("SQL params -> " + params);
 				
 				if (updateParams != null) {
 					

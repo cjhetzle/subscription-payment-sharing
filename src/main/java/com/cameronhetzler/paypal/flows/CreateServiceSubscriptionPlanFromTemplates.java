@@ -19,7 +19,7 @@ public class CreateServiceSubscriptionPlanFromTemplates extends ApplicationServi
 	@Override
 	protected Result executeApplicationFlow(Payload request) throws ServicesException {
 		final String methodName = "executeApplicationFlow";
-		Long entryTime = entering(methodName, request);
+		final Long entryTime = entering(methodName, request);
 		Result result = new Result(getSimpleClassName() + "." + methodName);
 
 		SubscriptionPlanType plan = new SubscriptionPlanType();

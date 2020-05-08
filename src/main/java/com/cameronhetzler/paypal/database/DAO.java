@@ -16,7 +16,9 @@ import java.util.Properties;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
 
+import com.cameronhetzler.paypal.SQL.SQL;
 import com.cameronhetzler.paypal.common.Constants;
+import com.cameronhetzler.paypal.result.Result;
 
 /**
  * 
@@ -81,7 +83,7 @@ public class DAO {
 	 * @param generatedKeys
 	 * @return
 	 */
-	public static Map<Integer, Map<String, Object>> executeUpdate(Properties dbProperties, String query,
+	public static Result executeUpdate(Properties dbProperties, SQL query,
 			ArrayList<Object> updateParams, String[] generatedKeys) {
 		return executeUpdate(getConnection(dbProperties), query, updateParams, generatedKeys);
 	}
@@ -94,9 +96,9 @@ public class DAO {
 	 * @param generatedKeys
 	 * @return
 	 */
-	public static Map<Integer, Map<String, Object>> executeUpdate(Connection connection, String query,
+	public static Result executeUpdate(Connection connection, SQL query,
 			ArrayList<Object> updateParams, String[] generatedKeys) {
-		
+		Result result = new Result();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Map<Integer, Map<String, Object>> resultTable = null;
@@ -109,13 +111,13 @@ public class DAO {
 				LOGGER.info("Obtained connection.");
 				
 				if (generatedKeys != null) {
-					preparedStatement = connection.prepareStatement(query, generatedKeys);
+					preparedStatement = connection.prepareStatement(query.getSQL(), generatedKeys);
 				} else {
-					preparedStatement = connection.prepareStatement(query);
+					preparedStatement = connection.prepareStatement(query.getSQL());
 				}
 				
 				LOGGER.info("SQL to update -> " + query);
-				String params = null;
+				String params = "";
 				for (Object listParam : updateParams) {
 					params += listParam + ",";
 				}
@@ -186,9 +188,14 @@ public class DAO {
 				}
 			} else {
 				LOGGER.error("Connection is null, Query cannot be executed: " + query);
+				result.append("Connection is null, Query cannot be executed: " + query);
+				result.error();
 			}
 		} catch (Exception e) {
 			LOGGER.error("Exception occurred executing update query: " + query);
+			result.append("Exception occurred executing update query: " + query);
+			result.setThrowable(e);
+			result.error();
 		} finally {
 			if (resultSet != null) {
 				try {
@@ -216,7 +223,9 @@ public class DAO {
 			}
 		}
 		LOGGER.info("Exiting with results.");
-		return resultTable;
+		result.success();
+		result.setPayload(resultTable);
+		return result;
 	}
 	
 	/**
@@ -226,10 +235,10 @@ public class DAO {
 	 * @param updateParams
 	 * @return
 	 */
-	public static ArrayList<HashMap<String, Object>> executeSelectQuery(Properties dbProperties, String query,
+	public static Result executeSelect(Properties dbProperties, SQL query,
 			ArrayList<Object> updateParams) {
 		
-		return executeSelectQuery(getConnection(dbProperties), query, updateParams);
+		return executeSelect(getConnection(dbProperties), query, updateParams);
 	}
 	
 	/**
@@ -239,9 +248,10 @@ public class DAO {
 	 * @param updateParams
 	 * @return
 	 */
-	public static ArrayList<HashMap<String, Object>> executeSelectQuery(Connection connection, String query,
+	public static Result executeSelect(Connection connection, SQL query,
 			ArrayList<Object> updateParams) {
 		
+		Result result = new Result();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -251,7 +261,7 @@ public class DAO {
 			if (connection != null) {
 				
 				LOGGER.info("Obtained connection.");
-				preparedStatement = connection.prepareStatement(query);
+				preparedStatement = connection.prepareStatement(query.getSQL());
 				
 				if (updateParams != null) {
 					
@@ -316,9 +326,14 @@ public class DAO {
 				} 
 			} else {
 				LOGGER.error("Connection is null, Query cannot be executed: " + query);
+				result.append("Connection is null, Query cannot be executed: " + query);
+				result.error();
 			}
 		} catch (Exception e) {
 			LOGGER.error("Exception occurred executing update query: " + query);
+			result.append("Exception occurred executing update query: " + query);
+			result.setThrowable(e);
+			result.error();
 		} finally {
 			if (resultSet != null) {
 				try {
@@ -346,6 +361,8 @@ public class DAO {
 			}
 		}
 		LOGGER.info("Exiting with results.");
-		return resultRecords;
+		result.success();
+		result.setPayload(resultRecords);
+		return result;
 	}
 }

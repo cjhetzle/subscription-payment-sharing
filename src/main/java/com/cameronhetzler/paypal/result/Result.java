@@ -44,6 +44,14 @@ public class Result {
 
 	@Getter
 	private AbstractList<Result> results;
+	
+	@Getter
+	@Setter
+	private Object payload;
+	
+	public boolean isError() {
+		return this.getResultCode() == ResultCodes.ERROR ? true : false;
+	}
 
 	public void setThrowable(Throwable value) {
 		if (throwable != null || value == null)
@@ -121,6 +129,39 @@ public class Result {
 		strBldr.append("throwable=" + String.valueOf(throwable));
 
 		strBldr.append(")");
+
+		return strBldr.toString();
+	}
+	
+	public String toString() {
+		return this.toString("");
+	}
+	
+	private String toString(String appendFormat) {
+		StringBuilder strBldr = new StringBuilder();
+
+		strBldr.append("Result(\n");
+
+		strBldr.append(appendFormat + "\tmessage=" + String.valueOf(message) + "\n");
+
+		strBldr.append(appendFormat + "\tdetails=" + String.valueOf(details) + "\n");
+
+		strBldr.append(appendFormat + "\tresultCode=" + String.valueOf(resultCode) + "\n");
+
+		strBldr.append(appendFormat + "\terrorCode=" + String.valueOf(errorCode) + "\n");
+
+		strBldr.append(appendFormat + "\tthrowable=" + String.valueOf(throwable) + "\n");
+		
+		if (results != null) {
+			strBldr.append(appendFormat + "\t{ ");
+			for (Result result : results) {
+				strBldr.append(result.toString(appendFormat + "\t"));
+				strBldr.append(appendFormat + "\t,");
+			}
+			strBldr.append(" }");
+		}
+
+		strBldr.append(appendFormat + ")\n");
 
 		return strBldr.toString();
 	}

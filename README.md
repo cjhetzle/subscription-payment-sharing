@@ -9,6 +9,6 @@ By using this application, you will be able to do two things. Create automatic i
 The price of these models can be explicitly defined per person via a template, or split the cost of a plan across the number of payees that are signed up.
 
 ## How to use
-
+test
 ### PayPal Business Account
 As it stands, you cannot leverage the PayPal API without making your PayPal account a business account. When that is done, you will have the option to go to https://developer.paypal.com to create an API application and you will be provided a ClientID and ClientSecret. You will also have to jump through another hoop to verify your Business Account to make use of the Live API, where you will recieve new ID's and Sercret's that are particular to that Live environment. Once you have those, you will be able to use those as your login to this application and have paymets and items sent to your account.

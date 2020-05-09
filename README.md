@@ -1,4 +1,4 @@
-# PayPalProject
+# [SMEX] Subscription Management Extensions
 
 ### Idea behind this project
 I share subscriptions to services to things like Netflix and Family Spotify. Idealy, subscriptions that are setup to use multiple accounts under one family plan. An idea situation of this is just a family where the kids have grown up to a point where they are expected to chip into the cost for Netflix.

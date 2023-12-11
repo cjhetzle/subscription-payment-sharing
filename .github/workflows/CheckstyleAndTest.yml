@@ -1,0 +1,46 @@
+name: Checkstyle and run Tests
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+
+  checkstyle:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout from Github
+      uses: actions/checkout@v3
+    
+    - name: Run Checkstyle
+      # You may pin to the exact commit or the version.
+      # uses: super-linter/super-linter@a8150b40c89574adb5f68bf9502b890a236a06b3
+      run: mvn checkstyle:check
+
+  testing:
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout from Github
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 17 🐣
+      uses: actions/setup-java@v4.0.0
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: Set up Maven 3.9.6 🐤
+      uses: stCarolas/setup-maven@v.4.5
+      with:
+        maven-version: 3.9.6 # default is 3.8.2
+    
+    - name: Debug 🐛
+      run: mvn -version
+
+    - name: Run Testing
+      run: mvn test

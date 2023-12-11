@@ -1,14 +1,108 @@
-# [SMEX] Subscription Management Extensions
+# hello-spring-boot
+## is a project designed to test end-to-end integration and delivery of a spring boot RESTful web service.
 
-### Idea behind this project
-I share subscriptions to services to things like Netflix and Family Spotify. Idealy, subscriptions that are setup to use multiple accounts under one family plan. An idea situation of this is just a family where the kids have grown up to a point where they are expected to chip into the cost for Netflix.
-While the parents, or just the owners of a plan, can just manually Venmo their kids, much like mine does for my phone bill (thanks mom), a better and more stream-line option would just be to create a subscription of your own.
 
-### Eventually
-By using this application, you will be able to do two things. Create automatic invoices and send them out to a list of people with the press of a button. This will act as a simple Batch Invoice creator. Another flow of this application will be to create subscription models that you can then send to your friends to have them subscribe to your own plan and have a steady flow of money.
-The price of these models can be explicitly defined per person via a template, or split the cost of a plan across the number of payees that are signed up.
 
-## How to use
-test
-### PayPal Business Account
-As it stands, you cannot leverage the PayPal API without making your PayPal account a business account. When that is done, you will have the option to go to https://developer.paypal.com to create an API application and you will be provided a ClientID and ClientSecret. You will also have to jump through another hoop to verify your Business Account to make use of the Live API, where you will recieve new ID's and Sercret's that are particular to that Live environment. Once you have those, you will be able to use those as your login to this application and have paymets and items sent to your account.
+This uses *Spring Boot Web Services** and **Spring Data JPA** to access a **PostgreSQL** Database. It manages `Assets` which can be related to one other Asset. They contain a name and a boolean value for `is_promoted`.
+This webservice allows CRUD based operations against Assets. When an Asset is promoted it will reflect that change against all other Assets related (children and ancestors).
+
+Check out my other project [react-asset-client](https://github.com/cjhetzle/react-asset-client/) meant to work as an interface to this project! :)
+
+```
+Asset {
+  id: int
+  name: string
+  is_promoted: boolean
+  parent_asset_id: int
+}
+```
+
+## Requirements
+```
+Java ^17.x
+PostgreSQL
+Docker (recomended)
+```
+
+## Installation
+```
+git clone git@github.com:cjhetzle/hello-spring-boot.git
+cd hello-spring-boot
+```
+
+## Setup
+```
+edit -> ./src/main/resources/application.properties
+spring.datasource.url= ? # format jdbc:postgresql://{hostname}:{port}/{database-name}
+spring.datasource.username= ?
+spring.datasource.password= ?
+```
+
+## Execution
+```
+./mvnw spring-boot:run
+```
+
+## Running tests
+```
+edit -> ./src/test/resources/application.properties
+spring.datasource.url= ? # format jdbc:postgresql://{hostname}:{port}/{database-name}
+spring.datasource.username= ?
+spring.datasource.password= ?
+
+# Optional
+You have the option of using ./compose-postgres.yaml
+cd {project root} && docker-compose -f compose-postgres.yaml up -d;
+edit -> ./src/test/resources/application.properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/mydatabase
+spring.datasource.username=myuser
+spring.datasource.password=secret
+
+# Lastly
+./mvnw run tests
+```
+
+## Running checkstyle
+```
+find checkstyle exceptions
+./mvnw checkstyle:check
+
+create a checkstyle report
+./mvnw checkstyle:checkstyle
+```
+
+## Deploying test env
+```
+this will provide a portable environment to run and test the rest interface
+with its own portable database that persists data locally under ./database
+
+edit -> ./src/main/resources/application.properties
+or
+if using env variables to manage application.properties you will need
+to pass env vars into the docker container through the compose-test.yaml file.
+
+./docker-compose up -d
+```
+
+## Deploying prod env
+```
+via jar exec
+
+./mvnw -f pom.xml clean package -DskipTests
+builds to ./target/*.jar
+
+run via
+$JAVA_HOME/bin/java -jar ./target/*.jar
+```
+
+```
+via docker (recomended)
+docker build -t {image-name}:{tag} -f ./Dockerfile .
+docker tag {image-name}:{tag} {cr-host}/{container-registry}/{image-name}
+docker push {cr-host}/{container-registry}/{image-name}:{tag}
+
+from here deploy as necessary
+```
+
+## Documentation
+You may want to visit the `{hostname}/swagger-ui/index.html` endpoint, provided by springdoc-openapi to get an understanding of the RESTful interface.

@@ -1,0 +1,12 @@
+services:
+  db:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=mydatabase'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=myuser'
+    ports:
+      - '5432'
+
+
+# https://medium.com/@bubu.tripathy/containerize-and-deploy-a-spring-boot-application-in-a-kubernetes-cluster-6dfe0a1a4b15#:~:text=A%20Step-by-Step%20Guide%20with%20Code%20Examples%201%20Step,...%205%20Step%205%3A%20Test%20the%20Application%20

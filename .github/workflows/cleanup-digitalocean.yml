@@ -1,0 +1,44 @@
+name: Cleanup Digital Ocean
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+
+  remove-old-images:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: GitHub Action for DigitalOcean - doctl 🌊
+      uses: digitalocean/action-doctl@v2.5.0
+      with:
+        token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+    - name: Authenticate to DigitalOcean 🔐
+      run: doctl registry login --expiry-seconds 600
+
+    - name: List digest and then delete
+      run: |- 
+        doctl r r lm hello-spring-boot | awk 'NR>3{print $1}' > output.txt &&
+        while read digest; do
+          doctl r r dm hello-spring-boot $digest -f
+        done <output.txt
+
+  run-garbage-collection:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: GitHub Action for DigitalOcean - doctl 🌊
+        uses: digitalocean/action-doctl@v2.5.0
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          
+          
+      - name: Authenticate to DigitalOcean 🔐
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Start Garbage Collection
+        run: doctl registry garbage-collection start ${{ vars.DIGITALOCEAN_CONTAINER_REGISTRY }} -f         

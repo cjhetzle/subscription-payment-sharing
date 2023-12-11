@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-    private static final String[] WHITE_LIST_URLS = { "/catalogue", "/catalogue/" };
+    // private static final String[] WHITE_LIST_URLS = { "/catalogue", "/catalogue/" };
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -25,7 +25,7 @@ public class WebSecurityConfig {
         http.cors(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(request -> {
-            request.requestMatchers(WHITE_LIST_URLS).permitAll();
+            request.anyRequest().permitAll();
             request.anyRequest().authenticated();
         });
         return http.build();

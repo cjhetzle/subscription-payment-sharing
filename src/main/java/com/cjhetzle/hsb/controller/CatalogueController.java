@@ -6,9 +6,7 @@ import com.cjhetzle.hsb.lib.common.LoggingLayer;
 import com.cjhetzle.hsb.service.CatalogueService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
